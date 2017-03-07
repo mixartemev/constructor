@@ -1,41 +1,25 @@
 <?php
 
 use backend\models\Field;
+use backend\models\Type;
+use himiklab\sortablegrid\SortableGridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $id_table int */
-
-var_dump(Yii::$app->request->isAjax);
-if(!Yii::$app->request->isAjax){
-	$this->title = 'Fields';
-	$this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['table/index']];
-	$this->params['breadcrumbs'][] = ['label' => \backend\models\Table::findOne($id_table)->name, 'url' => ['table/view','id' => $id_table]];
-	$this->params['breadcrumbs'][] = $this->title;
-}
-
+/* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
 <div class="field-index">
 	<?php Pjax::begin(); ?>
-	<?= GridView::widget([
-		'dataProvider' => Field::getDataProvider($id_table), //todo подумать как вынестив контроллеры и таблицы и поля
+	<?= SortableGridView::widget([
+		'dataProvider' => $dataProvider,
+		'showFooter' =>true,
 		'columns' => [
 			[
-				'options' => ['width' => 30],
-				'format' => 'raw',
-				'value' =>  function($model,$key) {
-					return Html::a(
-						'<span class="glyphicon glyphicon-pencil"></span>',
-						Yii::$app->getUrlManager()->createUrl(['field/update', 'id' => $key]),
-						['title' => 'Редактирование поля ' . $model->name]
-					);
-				}
-			],
-			[
 				'attribute' => 'id',
-				'options' => ['width' => 50]
+				'options' => ['width' => 50],
+				'footer' => Html::beginForm(['/field/create', 'id_table' => $dataProvider->query->where['id_table']])
 			],
 			[
 				'attribute' => 'name',
@@ -46,7 +30,8 @@ if(!Yii::$app->request->isAjax){
 						Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
 						['title' => 'Просмотр поля '.$model->name]
 					);
-				}
+				},
+				'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control'])
 			],
 			[
 				'attribute' => 'type.title',
@@ -57,7 +42,20 @@ if(!Yii::$app->request->isAjax){
 						Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
 						['title' => 'Просмотр типа '.$model->type->name]
 					);
-				}
+				},
+				'footer' => Html::activeDropDownList($newField, 'id_type', ArrayHelper::map(Type::find()->all(), 'id', 'title'), ['class' => 'form-control'])
+			],
+			[
+				'options' => ['width' => 30],
+				'format' => 'raw',
+				'value' =>  function($model,$key) {
+					return Html::a(
+						'<span class="glyphicon glyphicon-pencil"></span>',
+						Yii::$app->getUrlManager()->createUrl(['field/update', 'id' => $key]),
+						['title' => 'Редактирование поля ' . $model->name]
+					);
+				},
+				'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
 			],
 			[
 				'class' => 'yii\grid\ActionColumn',
@@ -74,7 +72,8 @@ if(!Yii::$app->request->isAjax){
 								'data-method' => 'post',
 							]);
 					}
-				]
+				],
+				'footer' => Html::endForm()
 			]
 		]
 	]); ?>

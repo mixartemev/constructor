@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Field;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
@@ -67,8 +68,24 @@ class TableController extends Controller
      */
     public function actionView($id)
     {
+		$fieldDataProvider = new ActiveDataProvider([
+			'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
+		]);
+
+		/**
+		 * Настройка параметров сортировки
+		 * Важно: должна быть выполнена раньше $this->load($params)
+		 * statement below
+		 */
+		$fieldDataProvider->setSort([
+			'attributes' => [
+				'id','name','type.title'
+			]
+		]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+			'fieldDataProvider' => $fieldDataProvider,
         ]);
     }
 

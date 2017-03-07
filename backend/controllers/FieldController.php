@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Field;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,18 +29,6 @@ class FieldController extends Controller
     }
 
     /**
-     * Lists all Field models.
-     * @param $id_table
-     * @return mixed
-     */
-    public function actionIndex($id_table)
-    {
-        return $this->render('index', [
-            'id_table' => $id_table
-        ]);
-    }
-
-    /**
      * Displays a single Field model.
      * @param integer $id
      * @return mixed
@@ -64,7 +51,7 @@ class FieldController extends Controller
         $model = new Field(['id_table' => $id_table]); // то у этого поля таблица сразу выбрана
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+			return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [
                 'model' => $model,

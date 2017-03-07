@@ -1,35 +1,16 @@
 <?php
 
-use backend\models\Field;
 use yii\data\ActiveDataProvider;
-
-use yii\grid\GridView;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Table */
+/* @var ActiveDataProvider $fieldDataProvider */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-$dataProvider = new ActiveDataProvider([
-    'query' => Field::find()->where(['id_table' => $model->id])->joinWith('type'),
-]);
-
-/**
- * Настройка параметров сортировки
- * Важно: должна быть выполнена раньше $this->load($params)
- * statement below
- */
-$dataProvider->setSort([
-    'attributes' => [
-        'id','name','type.title'
-    ]
-]);
 ?>
 <div class="table-view">
     
@@ -52,6 +33,6 @@ $dataProvider->setSort([
         ],
     ]) ?>
 
-	<?= $this->render('../field/index', ['id_table' => $model->id]) ?>
+    <?= $this->render('../field/index', ['dataProvider' => $fieldDataProvider]) ?>
 
 </div>
