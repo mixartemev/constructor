@@ -31,3 +31,8 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+
+/composer.lock
+/init.bat
+/yii.bat
+/Vagrantfile
