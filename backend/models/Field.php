@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "field".
@@ -16,8 +18,10 @@ use Yii;
  * @property Table $table
  * @property Relation[] $relations
  * @property Relation[] $relations0
+ *
+ * @property ActiveDataProvider $dataProvider
  */
-class Field extends \yii\db\ActiveRecord
+class Field extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -85,4 +89,28 @@ class Field extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Relation::className(), ['pk' => 'id'])->inverseOf('pk0');
     }
+
+	/**
+	 * @param int $id_table
+	 * @return ActiveDataProvider
+	 */
+	public static function getDataProvider($id_table)
+	{
+		$dataProvider = new ActiveDataProvider([
+			'query' => static::find()->where(['id_table' => $id_table])->joinWith('type'),
+		]);
+
+		/**
+		 * Настройка параметров сортировки
+		 * Важно: должна быть выполнена раньше $this->load($params)
+		 * statement below
+		 */
+		$dataProvider->setSort([
+			'attributes' => [
+				'id','name','type.title'
+			]
+		]);
+
+		return $dataProvider;
+	}
 }

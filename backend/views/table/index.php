@@ -1,7 +1,8 @@
 <?php
 
+use backend\models\Table;
+use himiklab\sortablegrid\SortableGridView;
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,30 +11,16 @@ $this->title = 'Tables';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="table-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Table', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php Pjax::begin(); ?>
+    <?= SortableGridView::widget([
         'dataProvider' => $dataProvider,
+        'showFooter' =>true,
         'columns' => [
             [
-                'options' => ['width' => 30],
-                'format' => 'raw',
-                'value' =>  function($model,$key) {
-                    return Html::a(
-                        '<span class="glyphicon glyphicon-pencil"></span>',
-                        Yii::$app->getUrlManager()->createUrl(['table/update', 'id' => $key]),
-                        ['title' => 'Редактирование таблицы ' . $model->name]
-                    );
-                }
-            ],
-            [
                 'attribute' => 'id',
-                'options' => ['width' => 50]
-            ],
+                'options' => ['width' => 50],
+				'footer' => Html::beginForm('/table/create')
+			],
             [
                 'attribute' => 'name',
                 'format' => 'raw',
@@ -43,8 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         Yii::$app->getUrlManager()->createUrl(['table/view','id' => $key]),
                         ['title' => 'Просмотр таблицы '.$model->name]
                     );
-                }
+                },
+                'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control'])
             ],
+			[
+				'options' => ['width' => 30],
+				'format' => 'raw',
+				'value' =>  function($model,$key) {
+					return Html::a(
+						'<span class="glyphicon glyphicon-pencil"></span>',
+						Yii::$app->getUrlManager()->createUrl(['table/update', 'id' => $key]),
+						['title' => 'Редактирование таблицы ' . $model->name]
+					);
+				},
+				'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
+			],
             [
                 'options' => ['width' => 30],
                 'format' => 'raw',
@@ -58,8 +58,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-method' => 'post',
                         ]
                     );
-                }
-            ]
+                },
+				'footer' => Html::endForm()
+			]
         ],
     ]); ?>
     <?php Pjax::end(); ?></div>

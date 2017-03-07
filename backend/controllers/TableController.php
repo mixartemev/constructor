@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
@@ -29,6 +30,16 @@ class TableController extends Controller
         ];
     }
 
+	public function actions()
+	{
+		return [
+			'sort' => [
+				'class' => SortableGridAction::className(),
+				'modelName' => Table::className(),
+			],
+		];
+	}
+
     /**
      * Lists all Table models.
      * @return mixed
@@ -37,6 +48,11 @@ class TableController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Table::find(),
+			'sort' => [
+				'defaultOrder' => [
+					'sort' => SORT_ASC,
+				]
+			],
         ]);
 
         return $this->render('index', [
@@ -66,7 +82,7 @@ class TableController extends Controller
         $model = new Table();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [
                 'model' => $model,

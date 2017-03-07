@@ -36,12 +36,7 @@ class FieldController extends Controller
      */
     public function actionIndex($id_table)
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Field::find()->where(['id_table' => $id_table]),
-        ]);
-
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
             'id_table' => $id_table
         ]);
     }

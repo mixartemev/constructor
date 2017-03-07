@@ -32,9 +32,7 @@ $dataProvider->setSort([
 ]);
 ?>
 <div class="table-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -54,72 +52,6 @@ $dataProvider->setSort([
         ],
     ]) ?>
 
-    <div class="field-index">
-
-        <p>
-            <?= Html::a('Create Field', ['/field/create', 'id_table' => $model->id], ['class' => 'btn btn-success']) ?>
-        </p>
-        <?php Pjax::begin(); ?>
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'columns' => [
-                [
-                    'options' => ['width' => 30],
-                    'format' => 'raw',
-                    'value' =>  function($model,$key) {
-                        return Html::a(
-                            '<span class="glyphicon glyphicon-pencil"></span>',
-                            Yii::$app->getUrlManager()->createUrl(['field/update', 'id' => $key]),
-                            ['title' => 'Редактирование поля ' . $model->name]
-                        );
-                    }
-                ],
-                [
-                    'attribute' => 'id',
-                    'options' => ['width' => 50]
-                ],
-                [
-                    'attribute' => 'name',
-                    'format' => 'raw',
-                    'value' => function($model,$key){
-                        return Html::a(
-                            $model->name,
-                            Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
-                            ['title' => 'Просмотр поля '.$model->name]
-                        );
-                    }
-                ],
-                [
-                    'attribute' => 'type.title',
-                    'format' => 'raw',
-                    'value' => function($model){
-                        return Html::a(
-                            $model->type->title,
-                            Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
-                            ['title' => 'Просмотр типа '.$model->type->name]
-                        );
-                    }
-                ],
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'options' => ['width' => 30],
-                    //'format' => 'row',
-                    'template' => '{delete}',
-                    'buttons' => [
-                        'delete' => function ($url,$model,$key) {
-                            return Html::a(
-                                '<span class="glyphicon glyphicon-trash"></span>',
-                                Yii::$app->getUrlManager()->createUrl(['field/delete','id' => $key, 'id_table' => $model->id_table]),
-                                [
-                                    'title' => Yii::t('yii', 'Delete field '.$model->name),
-                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                    'data-method' => 'post',
-                                ]);
-                        }
-                    ]
-                ]
-            ]
-        ]); ?>
-        <?php Pjax::end(); ?></div>
+	<?= $this->render('../field/index', ['id_table' => $model->id]) ?>
 
 </div>
