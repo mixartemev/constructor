@@ -4,7 +4,7 @@
 
 use yii\helpers\Url;
 
-$this->title = Yii::$app->name;
+$this->title = Yii::$app->session->get('db') ?: Yii::$app->name;
 ?>
 <div class="site-index">
 

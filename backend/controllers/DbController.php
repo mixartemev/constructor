@@ -74,6 +74,12 @@ class DbController extends Controller
         }
     }
 
+    public function actionCheck($id)
+    {
+        Yii::$app->session->set('db', $id);
+        return $this->goBack();
+    }
+
     /**
      * Updates an existing Db model.
      * If update is successful, the browser will be redirected to the 'view' page.

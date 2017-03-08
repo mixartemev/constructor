@@ -2,7 +2,7 @@
 
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "db".
@@ -12,7 +12,7 @@ use Yii;
  *
  * @property Table[] $tables
  */
-class Db extends \yii\db\ActiveRecord
+class Db extends ActiveRecord
 {
     /**
      * @inheritdoc
