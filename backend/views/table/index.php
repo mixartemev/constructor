@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ['title' => 'Просмотр таблицы '.$model->name]
                     );
                 },
-                'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control'])
+                'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control', 'required' => true])
             ],
 			[
 				'options' => ['width' => 30],

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use himiklab\sortablegrid\SortableGridBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -11,6 +12,9 @@ use yii\db\ActiveRecord;
  * @property string $name
  * @property integer $id_table
  * @property integer $id_type
+ * @property integer $sort
+ * @property string $null
+ * @property string $signed
  *
  * @property Type $type
  * @property Table $table
@@ -27,6 +31,16 @@ class Field extends ActiveRecord
         return 'field';
     }
 
+	public function behaviors()
+	{
+		return [
+			'sort' => [
+				'class' => SortableGridBehavior::className(),
+				'sortableAttribute' => 'sort'
+			],
+		];
+	}
+
     /**
      * @inheritdoc
      */
@@ -34,8 +48,9 @@ class Field extends ActiveRecord
     {
         return [
             [['name', 'id_table'], 'required'],
-            [['id_table', 'id_type'], 'integer'],
+            [['id_table', 'id_type', 'sort'], 'integer'],
             [['name'], 'string', 'max' => 255],
+			[['null', 'signed'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];

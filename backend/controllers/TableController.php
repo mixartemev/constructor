@@ -70,6 +70,11 @@ class TableController extends Controller
     {
 		$fieldDataProvider = new ActiveDataProvider([
 			'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
+			'sort' => [
+				'defaultOrder' => [
+					'sort' => SORT_ASC,
+				]
+			],
 		]);
 
 		/**
@@ -77,11 +82,11 @@ class TableController extends Controller
 		 * Важно: должна быть выполнена раньше $this->load($params)
 		 * statement below
 		 */
-		$fieldDataProvider->setSort([
+		/*$fieldDataProvider->setSort([
 			'attributes' => [
 				'id','name','type.title'
 			]
-		]);
+		]);*/
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -154,4 +159,24 @@ class TableController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionGen($ns)
+	{
+		/** @var Table $table */
+		foreach (Table::find()->orderBy('sort')->all() as $table){
+			$fields = [];
+			/** @var Field $field */
+			foreach ($table->fields as $field){
+				$fields []= $field->name
+					. ':' . $field->type->name . ($field->null ? '' : ':notNull')
+					. (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '');
+			}
+			print 'php yii migrate/create create_{$table->name}_table --fields="' . implode(',', $fields) . '" --interactive=0'."\r\n";
+		}
+		print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
+		foreach (Table::find()->where(['gen_crud' => 1])->all() as $table){
+			$class = ucfirst($table->name);
+			print 'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+		}
+	}
 }

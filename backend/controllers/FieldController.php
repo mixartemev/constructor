@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Field;
 use yii\web\Controller;
@@ -27,6 +28,16 @@ class FieldController extends Controller
             ],
         ];
     }
+
+	public function actions()
+	{
+		return [
+			'sort' => [
+				'class' => SortableGridAction::className(),
+				'modelName' => Field::className(),
+			],
+		];
+	}
 
     /**
      * Displays a single Field model.

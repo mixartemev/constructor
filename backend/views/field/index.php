@@ -11,10 +11,11 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
 <div class="field-index">
-	<?php Pjax::begin(); ?>
+	<?php //Pjax::begin(); ?>
 	<?= SortableGridView::widget([
 		'dataProvider' => $dataProvider,
 		'showFooter' =>true,
+        'sortableAction' => ['/field/sort'],
 		'columns' => [
 			[
 				'attribute' => 'id',
@@ -31,7 +32,7 @@ use yii\widgets\Pjax;
 						['title' => 'Просмотр поля '.$model->name]
 					);
 				},
-				'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control'])
+				'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control', 'required' => true])
 			],
 			[
 				'attribute' => 'type.title',
@@ -77,4 +78,4 @@ use yii\widgets\Pjax;
 			]
 		]
 	]); ?>
-	<?php Pjax::end(); ?></div>
+	<?php //Pjax::end(); ?></div>

@@ -63,6 +63,6 @@ class Table extends ActiveRecord
      */
     public function getFields()
     {
-        return $this->hasMany(Field::className(), ['id_table' => 'id'])->inverseOf('Table');
+        return $this->hasMany(Field::className(), ['id_table' => 'id'])->inverseOf('table');
     }
 }
