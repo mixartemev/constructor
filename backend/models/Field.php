@@ -88,7 +88,7 @@ class Field extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRelations()
+    public function getParentRelations()
     {
         return $this->hasMany(Relation::className(), ['fk' => 'id'])->inverseOf('fk0');
     }
@@ -96,7 +96,7 @@ class Field extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRelations0()
+    public function getChildRelations()
     {
         return $this->hasMany(Relation::className(), ['pk' => 'id'])->inverseOf('pk0');
     }

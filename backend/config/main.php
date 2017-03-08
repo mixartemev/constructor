@@ -7,10 +7,11 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'constructor',
+    'name' => 'Project Generator',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => 'table',
+    //'defaultRoute' => 'table',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [

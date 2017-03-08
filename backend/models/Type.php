@@ -2,18 +2,17 @@
 
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "type".
  *
  * @property integer $id
  * @property string $name
- * @property string $title
  *
  * @property Field[] $fields
  */
-class Type extends \yii\db\ActiveRecord
+class Type extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -30,7 +29,7 @@ class Type extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name','title'], 'string', 'max' => 63],
+            [['name'], 'string', 'max' => 63],
         ];
     }
 
@@ -42,7 +41,6 @@ class Type extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Тип',
-            'title' => 'Название',
         ];
     }
 

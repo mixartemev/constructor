@@ -55,6 +55,10 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        if(Yii::$app->session->get('db'))
+        {
+            return $this->redirect('/table/index');
+        }
         return $this->render('index');
     }
 
