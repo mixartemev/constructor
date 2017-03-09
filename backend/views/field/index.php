@@ -1,6 +1,7 @@
 <?php
 
 use backend\models\Field;
+use backend\models\Table;
 use backend\models\Type;
 use himiklab\sortablegrid\SortableGridView;
 use yii\helpers\ArrayHelper;
@@ -69,7 +70,7 @@ use yii\widgets\Pjax;
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'rel',
-                    ArrayHelper::map(Type::find()->all(), 'id', 'name'),
+                    ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'name'),
                     ['class' => 'form-control']
                 )
             ],
