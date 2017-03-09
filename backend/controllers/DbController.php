@@ -5,14 +5,13 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Db;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * DbController implements the CRUD actions for Db model.
  */
-class DbController extends Controller
+class DbController extends CommonController
 {
     /**
      * @inheritdoc
@@ -74,10 +73,15 @@ class DbController extends Controller
         }
     }
 
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     */
     public function actionCheck($id)
     {
-        Yii::$app->session->set('db', $id);
-        return $this->goBack();
+        $this->session->set('db', $id);
+        $this->session->setFlash('success', "DataBase selected");
+        return $this->redirect('/db');
     }
 
     /**

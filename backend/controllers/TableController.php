@@ -59,7 +59,11 @@ class TableController extends CommonController
     public function actionView($id)
     {
         $fieldDataProvider = new ActiveDataProvider([
-            'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
+            'query' => Field::find()
+                ->where(['id_table' => $id])
+                ->joinWith('type')
+                ->joinWith('parentRelation')
+            ,
             'sort' => [
                 'attributes' => [
                     'sort','id','name','type.name'

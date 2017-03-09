@@ -24,7 +24,7 @@ use yii\widgets\Pjax;
             [
                 'attribute' => 'id',
                 'options' => ['width' => 50],
-                'footer' => Html::beginForm(['/field/create', 'id_table' => $dataProvider->query->where['id_table']])
+                'footer' => Html::beginForm(['/field/create', 'id_table' => $id_table])
             ],
             [
                 'attribute' => 'name',
@@ -53,6 +53,50 @@ use yii\widgets\Pjax;
                     'id_type',
                     ArrayHelper::map(Type::find()->all(), 'id', 'name'),
                     ['class' => 'form-control']
+                )
+            ],
+            [
+                'attribute' => 'parentRelation.pk',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return Html::a(
+                        @$model->parentRelation->pk,
+                        Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
+                        ['title' => 'Просмотр типа '.$model->type->name]
+                    );
+                },
+                'footer' => Html::activeDropDownList(
+                    $newField,
+                    'rel',
+                    ArrayHelper::map(Type::find()->all(), 'id', 'name'),
+                    ['class' => 'form-control']
+                )
+            ],
+            [
+                'attribute' => 'null',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return Html::checkbox('null', $model->null, ['disabled' => true]);
+                },
+                'footer' => Html::activeCheckbox(
+                    $newField,
+                    'null',
+                    ['label' => false]
+                )
+            ],
+            [
+                'attribute' => 'signed',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return Html::checkbox('null', $model->signed, ['disabled' => true]);
+                },
+                'footer' => Html::activeCheckbox(
+                    $newField,
+                    'signed',
+                    ['label' => false]
                 )
             ],
             [

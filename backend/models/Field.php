@@ -18,8 +18,8 @@ use yii\db\ActiveRecord;
  *
  * @property Type $type
  * @property Table $table
- * @property Relation[] $relations
- * @property Relation[] $relations0
+ * @property Relation $parentRelation
+ * @property Relation[] $childRelations
  */
 class Field extends ActiveRecord
 {
@@ -31,15 +31,20 @@ class Field extends ActiveRecord
         return 'field';
     }
 
-	public function behaviors()
-	{
-		return [
-			'sort' => [
-				'class' => SortableGridBehavior::className(),
-				'sortableAttribute' => 'sort'
-			],
-		];
-	}
+    public $rel;
+
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            'sort' => [
+                'class' => SortableGridBehavior::className(),
+                'sortableAttribute' => 'sort'
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -50,7 +55,7 @@ class Field extends ActiveRecord
             [['name', 'id_table'], 'required'],
             [['id_table', 'id_type', 'sort'], 'integer'],
             [['name'], 'string', 'max' => 255],
-			[['null', 'signed'], 'boolean'],
+            [['null', 'signed'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -63,9 +68,10 @@ class Field extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Название',
-            'table.name' => 'Таблица',
-            'type.title' => 'Тип',
+            'name' => 'Name',
+            'table.name' => 'Table',
+            'type.name' => 'Type',
+            'relation.name' => 'Type',
         ];
     }
 
@@ -88,9 +94,9 @@ class Field extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getParentRelations()
+    public function getParentRelation()
     {
-        return $this->hasMany(Relation::className(), ['fk' => 'id'])->inverseOf('fk0');
+        return $this->hasOne(Relation::className(), ['fk' => 'id'])->inverseOf('fk0');
     }
 
     /**
