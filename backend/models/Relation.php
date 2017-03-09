@@ -62,6 +62,6 @@ class Relation extends \yii\db\ActiveRecord
      */
     public function getPk0()
     {
-        return $this->hasOne(Field::className(), ['id' => 'pk'])->inverseOf('childRelations');
+        return $this->hasOne(Table::className(), ['id' => 'pk']);
     }
 }

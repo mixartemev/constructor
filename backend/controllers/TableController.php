@@ -158,9 +158,10 @@ class TableController extends CommonController
             foreach ($table->fields as $field){
                 $fields []= $field->name
                     . ':' . $field->type->name . ($field->null ? '' : ':notNull')
-                    . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '');
+                    . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
+					. ($field->parentRelation ? ':foreignKey('.$field->parentRelation->pk0->name.')' : '');
             }
-            print 'php yii migrate/create create_{$table->name}_table --fields="'. implode(',', $fields) . '" --interactive=0'."\r\n";
+            print 'php yii migrate/create create_'.$table->name.'_table --fields="'. implode(',', $fields) . '" --interactive=0'."\r\n";
         }
         print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
         foreach (Table::find()->where(['gen_crud' => 1])->all() as $table){
