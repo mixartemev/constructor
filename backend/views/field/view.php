@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'table.name',
-            'type.title',
         ],
     ]) ?>
 

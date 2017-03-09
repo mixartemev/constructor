@@ -29,15 +29,18 @@ class FieldController extends Controller
         ];
     }
 
-	public function actions()
-	{
-		return [
-			'sort' => [
-				'class' => SortableGridAction::className(),
-				'modelName' => Field::className(),
-			],
-		];
-	}
+    /**
+     * @return array
+     */
+    public function actions()
+    {
+        return [
+            'sort' => [
+                'class' => SortableGridAction::className(),
+                'modelName' => Field::className(),
+            ],
+        ];
+    }
 
     /**
      * Displays a single Field model.
@@ -62,7 +65,7 @@ class FieldController extends Controller
         $model = new Field(['id_table' => $id_table]); // то у этого поля таблица сразу выбрана
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(Yii::$app->request->referrer);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [
                 'model' => $model,

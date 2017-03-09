@@ -7,39 +7,25 @@ use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * TableController implements the CRUD actions for Table model.
  */
-class TableController extends Controller
+class TableController extends CommonController
 {
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function behaviors()
+    public function actions()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+            'sort' => [
+                'class' => SortableGridAction::className(),
+                'modelName' => Table::className(),
             ],
         ];
     }
-
-	public function actions()
-	{
-		return [
-			'sort' => [
-				'class' => SortableGridAction::className(),
-				'modelName' => Table::className(),
-			],
-		];
-	}
 
     /**
      * Lists all Table models.
@@ -47,18 +33,22 @@ class TableController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Table::find(),
-			'sort' => [
-				'defaultOrder' => [
-					'sort' => SORT_ASC,
-				]
-			],
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        if($db = $this->session->get('db')){
+            $dataProvider = new ActiveDataProvider([
+                'query' => Table::find()->where(['id_db' => $db]),
+                'sort' => [
+                    'defaultOrder' => [
+                        'sort' => SORT_ASC,
+                    ]
+                ],
+            ]);
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            $this->session->setFlash('warning', 'Check db at first');
+            return $this->redirect('/db');
+        }
     }
 
     /**
@@ -68,29 +58,21 @@ class TableController extends Controller
      */
     public function actionView($id)
     {
-		$fieldDataProvider = new ActiveDataProvider([
-			'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
-			'sort' => [
-				'defaultOrder' => [
-					'sort' => SORT_ASC,
-				]
-			],
-		]);
-
-		/**
-		 * Настройка параметров сортировки
-		 * Важно: должна быть выполнена раньше $this->load($params)
-		 * statement below
-		 */
-		/*$fieldDataProvider->setSort([
-			'attributes' => [
-				'id','name','type.title'
-			]
-		]);*/
+        $fieldDataProvider = new ActiveDataProvider([
+            'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
+            'sort' => [
+                'attributes' => [
+                    'sort','id','name','type.name'
+                ],
+                'defaultOrder' => [
+                    'sort' => SORT_ASC,
+                ]
+            ],
+        ]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-			'fieldDataProvider' => $fieldDataProvider,
+            'fieldDataProvider' => $fieldDataProvider,
         ]);
     }
 
@@ -160,23 +142,26 @@ class TableController extends Controller
         }
     }
 
+    /**
+     * @param $ns
+     */
     public function actionGen($ns)
-	{
-		/** @var Table $table */
-		foreach (Table::find()->orderBy('sort')->all() as $table){
-			$fields = [];
-			/** @var Field $field */
-			foreach ($table->fields as $field){
-				$fields []= $field->name
-					. ':' . $field->type->name . ($field->null ? '' : ':notNull')
-					. (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '');
-			}
-			print 'php yii migrate/create create_{$table->name}_table --fields="' . implode(',', $fields) . '" --interactive=0'."\r\n";
-		}
-		print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
-		foreach (Table::find()->where(['gen_crud' => 1])->all() as $table){
-			$class = ucfirst($table->name);
-			print 'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
-		}
-	}
+    {
+        /** @var Table $table */
+        foreach (Table::find()->orderBy('sort')->all() as $table){
+            $fields = [];
+            /** @var Field $field */
+            foreach ($table->fields as $field){
+                $fields []= $field->name
+                    . ':' . $field->type->name . ($field->null ? '' : ':notNull')
+                    . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '');
+            }
+            print 'php yii migrate/create create_{$table->name}_table --fields="'. implode(',', $fields) . '" --interactive=0'."\r\n";
+        }
+        print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
+        foreach (Table::find()->where(['gen_crud' => 1])->all() as $table){
+            $class = ucfirst($table->name);
+            print 'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+        }
+    }
 }
