@@ -2,17 +2,17 @@
 
 namespace backend\controllers;
 
+use backend\models\Relation;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Field;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * FieldController implements the CRUD actions for Field model.
  */
-class FieldController extends Controller
+class FieldController extends CommonController
 {
     /**
      * @inheritdoc
@@ -64,7 +64,17 @@ class FieldController extends Controller
     {
         $model = new Field(['id_table' => $id_table]); // то у этого поля таблица сразу выбрана
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
+			if($pk = Yii::$app->request->post('Field')['rel'])
+			{
+				$rel = new Relation(['fk' => $model->id, 'pk' => $pk]);
+				if($rel->save()){
+					$this->session->setFlash('success', 'Relation saved');
+				}else{
+					$this->session->setFlash('error', 'Relation not saved');
+				}
+			}
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [

@@ -29,9 +29,7 @@ class Field extends Common
     {
         return 'field';
     }
-
-    public $rel;
-
+	
     /**
      * @return array
      */
@@ -105,18 +103,4 @@ class Field extends Common
     {
         return $this->hasMany(Relation::className(), ['pk' => 'id'])->inverseOf('pk0');
     }
-
-    public function afterSave($insert, $changedAttributes)
-	{
-		parent::afterSave($insert, $changedAttributes);
-		if($pk = \Yii::$app->request->post('Field')['rel']){ //ToDo wtf I do it through POST instead model attr
-			$cond = ['fk' => $this->id, 'pk' => $pk];
-			$rel = $insert ? new Relation($cond) : Relation::findOne($cond);
-			if($rel->save()){
-				$this->session->setFlash('success', 'Relation saved');
-			}else{
-				$this->session->setFlash('error', 'Relation not saved');
-			}
-		}
-	}
 }
