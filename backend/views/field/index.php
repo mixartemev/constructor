@@ -57,21 +57,21 @@ use yii\widgets\Pjax;
                 )
             ],
             [
-                'attribute' => 'parentRelation.pk',
+                'attribute' => 'fk',
                 'format' => 'raw',
                 'value' => function($model){
                     /** @var Field $model */
-                    return $model->parentRelation
+                    return $model->fk
                         ? Html::a(
-                            $model->parentRelation->pk0->name,
-                            Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->parentRelation->pk]),
-                            ['title' => 'Просмотр типа '.$model->type->name]
+                            $model->fkTable->name,
+                            Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->fk]),
+                            ['title' => 'Просмотр внешней таблицы '.$model->fkTable->name]
                         )
                         : '';
                 },
-                'footer' => Html::dropDownList(
-                    'rel',
-                    null,
+                'footer' => Html::activeDropDownList(
+                    $newField,
+                    'fk',
                     ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'name'),
                     ['class' => 'form-control', 'prompt' => 'No FK']
                 )

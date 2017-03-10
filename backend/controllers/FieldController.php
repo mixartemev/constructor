@@ -64,17 +64,7 @@ class FieldController extends CommonController
     {
         $model = new Field(['id_table' => $id_table]); // то у этого поля таблица сразу выбрана
 
-        if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            if($pk = Yii::$app->request->post('rel')) // toDo: move relations to model without before/after methods
-            {
-                $rel = new Relation(['fk' => $model->id, 'pk' => $pk]);
-                if($rel->save()){
-                    $this->session->setFlash('success', 'Relation saved');
-                }else{
-                    $this->session->setFlash('error', 'Relation not saved');
-                }
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [

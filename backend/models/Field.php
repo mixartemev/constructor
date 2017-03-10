@@ -11,14 +11,14 @@ use himiklab\sortablegrid\SortableGridBehavior;
  * @property string $name
  * @property integer $id_table
  * @property integer $id_type
+ * @property integer $fk
  * @property integer $sort
  * @property string $null
  * @property string $signed
  *
  * @property Type $type
  * @property Table $table
- * @property Relation $parentRelation
- * @property Relation[] $childRelations
+ * @property Table $fkTable
  */
 class Field extends Common
 {
@@ -50,11 +50,11 @@ class Field extends Common
     {
         return [
             [['name', 'id_table'], 'required'],
-            [['id_table', 'id_type', 'sort'], 'integer'],
+            [['id_table', 'id_type', 'sort', 'fk'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['null', 'signed'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
-            [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
+            [['id_table', 'fk'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
     }
 
@@ -68,7 +68,7 @@ class Field extends Common
             'name' => 'Name',
             'table.name' => 'Table',
             'type.name' => 'Type',
-            'relation.name' => 'Type',
+            'fk' => 'FK',
         ];
     }
 
@@ -91,27 +91,8 @@ class Field extends Common
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getParentRelation()
+    public function getFkTable()
     {
-        return $this->hasOne(Relation::className(), ['fk' => 'id'])->inverseOf('fk0');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getChildRelations()
-    {
-        return $this->hasMany(Relation::className(), ['pk' => 'id'])->inverseOf('pk0');
-    }
-
-    /**
-     * @return bool
-     */
-    function beforeDelete()
-    {
-        if(Relation::deleteAll(['fk' =>$this->id])){
-            $this->session->setFlash('success', 'Relation is deleted');
-        }
-        return parent::beforeDelete();
+        return $this->hasOne(Table::className(), ['id' => 'fk'])->inverseOf('refs');
     }
 }

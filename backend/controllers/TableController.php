@@ -59,11 +59,7 @@ class TableController extends CommonController
     public function actionView($id)
     {
         $fieldDataProvider = new ActiveDataProvider([
-            'query' => Field::find()
-                ->where(['id_table' => $id])
-                ->joinWith('type')
-                ->joinWith('parentRelation')
-            ,
+            'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
             'sort' => [
                 'attributes' => [
                     'sort','id','name','type.name'
@@ -152,19 +148,19 @@ class TableController extends CommonController
     public function actionGen($ns)
     {
         /** @var Table $table */
-        foreach (Table::find()->orderBy('sort')->all() as $table){
+        foreach (Table::find()->where(['id_db' => $this->session->get('db')])->orderBy('sort')->all() as $table){
             $fields = [];
             /** @var Field $field */
             foreach ($table->fields as $field){
                 $fields []= $field->name
                     . ':' . $field->type->name . ($field->null ? '' : ':notNull')
                     . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
-                    . ($field->parentRelation ? ':foreignKey('.$field->parentRelation->pk0->name.')' : '');
+                    . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
             }
             print 'php yii migrate/create create_'.$table->name.'_table --fields="'. implode(',', $fields) . '" --interactive=0'."\r\n";
         }
         print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
-        foreach (Table::find()->where(['gen_crud' => 1])->all() as $table){
+        foreach (Table::find()->where(['id_db' => $this->session->get('db'), 'gen_crud' => 1])->all() as $table){
             $class = ucfirst($table->name);
             print 'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }

@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use backend\models\Field;
+use backend\models\Table;
 use Yii;
 use backend\models\Db;
 use yii\data\ActiveDataProvider;
@@ -13,6 +15,17 @@ use yii\filters\VerbFilter;
  */
 class DbController extends CommonController
 {
+    const TYPE_INT = 1;
+    const TYPE_sINT = 2;
+    const TYPE_STR = 3;
+    const TYPE_TXT = 4;
+    const TYPE_BOOL = 5;
+    const TYPE_DATE = 6;
+    const TYPE_DATETIME = 7;
+    const TYPE_DEC31 = 8;
+    const TYPE_DEC72 = 9;
+    const TYPE_DEC132 = 10;
+
     /**
      * @inheritdoc
      */
@@ -71,6 +84,115 @@ class DbController extends CommonController
                 'model' => $model,
             ]);
         }
+    }
+
+    /*public function actionImport($db_name, $user, $password = '', $host = '127.0.0.1')
+    {
+        Yii::$app->setComponents(['db0' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => "mysql:host=$host;dbname=$db_name",
+            'username' => $user,
+            'password' => $password,
+            'charset' => 'utf8',
+        ]]);
+
+        $db0 = Yii::$app->db0;
+
+        $model = new Db();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }*/
+
+    /**
+     * @param $array
+     * @return \yii\web\Response
+     */
+    public function actionLoad($array = [])
+    {
+        $array = [
+            'object_cms' => [
+                0,
+                'metro' => [
+                    ['name', self::TYPE_STR]
+                ],
+                'complex' => [
+                    ['name', self::TYPE_STR],
+                    ['metro_id', self::TYPE_INT, 1],
+                    ['address', self::TYPE_STR],
+                    ['exploit_apartment_cost', self::TYPE_DEC72],
+                    ['exploit_office_cost', self::TYPE_DEC72],
+                    ['exploit_torg_cost', self::TYPE_DEC72],
+                    ['description', self::TYPE_STR],
+                ],
+                'tower' => [
+                    ['name', self::TYPE_STR],
+                    ['complex_id', self::TYPE_INT, 2],
+                    ['square', self::TYPE_INT],
+                    ['floor', self::TYPE_sINT],
+                    ['ceiling', self::TYPE_DEC31],
+                ],
+                'object' => [
+                    ['name', self::TYPE_STR],
+                    ['tower_id', self::TYPE_INT, 3],
+                    ['square', self::TYPE_INT],
+                    ['floor', self::TYPE_sINT],
+                    ['ceiling', self::TYPE_DEC31],
+                    ['created_at', self::TYPE_INT],
+                    ['updated_at', self::TYPE_INT],
+                ],
+            ],
+        ];
+
+        foreach($array as $dbName => $tables){
+            $db = new Db(['name' => $dbName, 'user_id' => Yii::$app->user->id]);
+            if($db->save()){
+                $t_i = 0;
+                $t_map = [];
+                foreach($tables as $table_name => $fields){
+                    if($table_name){
+                        $table = new Table(['name' => $table_name, 'sort' => $t_i, 'id_db' => $db->id]);
+                        if($table->save()){
+                            $t_map[$t_i] = $table->id;
+                            foreach($fields as $f_i => $prop){
+                                $field = new Field([
+                                    'name' => $prop[0],
+                                    'id_type' => $prop[1],
+                                    'sort' => $f_i,
+                                    'id_table' => $table->id,
+                                    'null' => isset($prop[3]),
+                                    'signed' => isset($prop[4])
+                                ]);
+                                if(isset($prop[2])){
+                                    $field->fk = $t_map[$prop[2]];
+                                }
+                                if(!$field->save()){
+                                    $this->session->setFlash('error', "Field {$prop[0]} not created");
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            $this->session->setFlash('error', "Table $table_name not created");
+                            break;
+                        }
+                    }
+                    $t_i++;
+                }
+            }
+            else{
+                $this->session->setFlash('error', "Db $dbName not created");
+                break;
+            }
+        }
+
+        return $this->redirect('/db');
+
     }
 
     /**

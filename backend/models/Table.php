@@ -24,15 +24,15 @@ class Table extends ActiveRecord
         return 'table';
     }
 
-	public function behaviors()
-	{
-		return [
-			'sort' => [
-				'class' => SortableGridBehavior::className(),
-				'sortableAttribute' => 'sort'
-			],
-		];
-	}
+    public function behaviors()
+    {
+        return [
+            'sort' => [
+                'class' => SortableGridBehavior::className(),
+                'sortableAttribute' => 'sort'
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -64,5 +64,13 @@ class Table extends ActiveRecord
     public function getFields()
     {
         return $this->hasMany(Field::className(), ['id_table' => 'id'])->inverseOf('table');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRefs()
+    {
+        return $this->hasMany(Field::className(), ['fk' => 'id'])->inverseOf('fkTable');
     }
 }
