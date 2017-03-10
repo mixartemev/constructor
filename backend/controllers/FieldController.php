@@ -66,15 +66,15 @@ class FieldController extends CommonController
 
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
-			if($pk = Yii::$app->request->post('Field')['rel'])
-			{
-				$rel = new Relation(['fk' => $model->id, 'pk' => $pk]);
-				if($rel->save()){
-					$this->session->setFlash('success', 'Relation saved');
-				}else{
-					$this->session->setFlash('error', 'Relation not saved');
-				}
-			}
+            if($pk = Yii::$app->request->post('rel')) // toDo: move relations to model without before/after methods
+            {
+                $rel = new Relation(['fk' => $model->id, 'pk' => $pk]);
+                if($rel->save()){
+                    $this->session->setFlash('success', 'Relation saved');
+                }else{
+                    $this->session->setFlash('error', 'Relation not saved');
+                }
+            }
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('create', [

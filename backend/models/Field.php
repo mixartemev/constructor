@@ -29,7 +29,7 @@ class Field extends Common
     {
         return 'field';
     }
-	
+
     /**
      * @return array
      */
@@ -102,5 +102,16 @@ class Field extends Common
     public function getChildRelations()
     {
         return $this->hasMany(Relation::className(), ['pk' => 'id'])->inverseOf('pk0');
+    }
+
+    /**
+     * @return bool
+     */
+    function beforeDelete()
+    {
+        if(Relation::deleteAll(['fk' =>$this->id])){
+            $this->session->setFlash('success', 'Relation is deleted');
+        }
+        return parent::beforeDelete();
     }
 }
