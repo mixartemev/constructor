@@ -43,7 +43,7 @@ class TableController extends CommonController
      */
     public function actionIndex()
     {
-        if($db = $this->getDb()->id){
+        if($db = @$this->getDb()->id){
             $dataProvider = new ActiveDataProvider([
                 'query' => Table::find()->where(['id_db' => $db]),
                 'sort' => [
@@ -171,7 +171,9 @@ class TableController extends CommonController
             /** @var Field $field */
             foreach ($table->fields as $field){
                 $fields []= $field->name
-                    . ':' . $field->type->name . ($field->null ? '' : ':notNull')
+                    . ':' . $field->type->name
+                    . ($field->null ? '' : ':notNull')
+                    . ($field->unique ? ':unique' : '')
                     . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
                     . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
             }

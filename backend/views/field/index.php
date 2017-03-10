@@ -103,6 +103,19 @@ use yii\widgets\Pjax;
                 )
             ],
             [
+                'attribute' => 'unique',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return Html::checkbox('unique', $model->unique, ['disabled' => true]);
+                },
+                'footer' => Html::activeCheckbox(
+                    $newField,
+                    'unique',
+                    ['label' => false]
+                )
+            ],
+            [
                 'options' => ['width' => 30],
                 'format' => 'raw',
                 'value' =>  function($model,$key) {

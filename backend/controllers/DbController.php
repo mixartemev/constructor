@@ -203,7 +203,7 @@ class DbController extends CommonController
     {
         $this->session->set('db', $id);
         $this->session->setFlash('success', "DataBase selected");
-        return $this->redirect('/db');
+        return $this->redirect('/table');
     }
 
     /**

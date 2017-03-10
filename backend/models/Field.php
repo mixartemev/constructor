@@ -13,8 +13,9 @@ use himiklab\sortablegrid\SortableGridBehavior;
  * @property integer $id_type
  * @property integer $fk
  * @property integer $sort
- * @property string $null
- * @property string $signed
+ * @property bool $null
+ * @property bool $signed
+ * @property bool $unique
  *
  * @property Type $type
  * @property Table $table
@@ -52,7 +53,7 @@ class Field extends Common
             [['name', 'id_table'], 'required'],
             [['id_table', 'id_type', 'sort', 'fk'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['null', 'signed'], 'boolean'],
+            [['null', 'signed', 'unique'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table', 'fk'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -69,6 +70,9 @@ class Field extends Common
             'table.name' => 'Table',
             'type.name' => 'Type',
             'fk' => 'FK',
+            'null' => 'Null',
+            'signed' => 'Signed',
+            'unique' => 'Unique',
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\Relation;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Field;

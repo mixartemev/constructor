@@ -25,21 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'format' => 'raw',
-                'value' => function($model,$key){
+                'value' => function($model,$key) {
                     return Html::a(
                         $model->name,
-                        Yii::$app->getUrlManager()->createUrl(['db/view','id' => $key]),
-                        ['title' => 'Просмотр таблицы '.$model->name]
-                    );
-                },
-                'footer' => Html::activeTextInput(new Db(), 'name', ['class' => 'form-control', 'required' => true])
-            ],
-            [
-                'options' => ['width' => 30],
-                'format' => 'raw',
-                'value' =>  function($model,$key) {
-                    return Html::a(
-                        '<span class="glyphicon glyphicon-check"></span>',
                         Yii::$app->getUrlManager()->createUrl(['db/check', 'id' => $key]),
                         [
                             'title' => 'Check DB ' . $model->name,
@@ -47,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     );
                 },
+                'footer' => Html::activeTextInput(new Db(), 'name', ['class' => 'form-control', 'required' => true])
             ],
             [
                 'options' => ['width' => 30],
