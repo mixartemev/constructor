@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Db;
 use backend\models\Field;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
@@ -11,9 +12,18 @@ use yii\web\NotFoundHttpException;
 
 /**
  * TableController implements the CRUD actions for Table model.
+ *
+ * @property string $dbName
  */
 class TableController extends CommonController
 {
+    /**
+     * @return Db $Db
+     */
+    public function getDb(){
+        return Db::findOne($this->session->get('db'));
+    }
+
     /**
      * @return array
      */
@@ -33,7 +43,7 @@ class TableController extends CommonController
      */
     public function actionIndex()
     {
-        if($db = $this->session->get('db')){
+        if($db = $this->getDb()->id){
             $dataProvider = new ActiveDataProvider([
                 'query' => Table::find()->where(['id_db' => $db]),
                 'sort' => [
@@ -143,12 +153,20 @@ class TableController extends CommonController
     }
 
     /**
-     * @param $ns
+     * @param string $ns
+     * @param string $begin
      */
-    public function actionGen($ns)
+    public function actionGen($ns = 'app', $begin = '')
     {
+        print 'composer create-project --prefer-dist yiisoft/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
+        print 'cd ' . $this->getDb()->name . "\r\n";
+        print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
+        print '#setup db-settings in main-local config' . "\r\n";
+        print $begin . 'php yii migrate --interactive=0' . "\r\n";
+
+#set db ssettings'."\r\n";
         /** @var Table $table */
-        foreach (Table::find()->where(['id_db' => $this->session->get('db')])->orderBy('sort')->all() as $table){
+        foreach (Table::find()->where(['id_db' => $this->getDb()->id])->orderBy('sort')->all() as $table){
             $fields = [];
             /** @var Field $field */
             foreach ($table->fields as $field){
@@ -157,12 +175,13 @@ class TableController extends CommonController
                     . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
                     . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
             }
-            print 'php yii migrate/create create_'.$table->name.'_table --fields="'. implode(',', $fields) . '" --interactive=0'."\r\n";
+            print $begin . 'php yii migrate/create create_'.$table->name.'_table --fields="id:primaryKey:notNull:unsigned,'. implode(',', $fields) . '" --interactive=0'."\r\n";
+            print $begin . 'php yii migrate --interactive=0' . "\r\n";
+            print $begin . 'php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.ucfirst($table->name).'  --interactive=0'."\r\n";
         }
-        print 'php yii gii/model --tableName=* --ns="'.$ns.'\models" --interactive=0'."\r\n";
-        foreach (Table::find()->where(['id_db' => $this->session->get('db'), 'gen_crud' => 1])->all() as $table){
+        foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = ucfirst($table->name);
-            print 'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+            print $begin.'php yii gii/crud --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }
     }
 }
