@@ -10,19 +10,12 @@ $config = [
 if (!YII_ENV_TEST) {
 	// configuration adjustments for 'dev' environment
 	$config['bootstrap'][] = 'gii';
-	//php yii gii/construct --template=const
+	//php yii gii/construct
 	$config['modules']['gii'] = [
 		'class' => 'yii\gii\Module',
 		'generators' => [
-			// Имя генератора
 			'construct' => [
-				// Класс генератора
-				'class'     => 'yii\gii\generators\crud\Generator',
-				// Настройки шаблонов
-				'templates' => [
-					// Имя шаблона => путь к шаблону
-					'const' => '@common/components/generators/crud/construct',
-				]
+				'class'     => 'common\components\generators\crud\Generator',
 			],
 		],
 	];

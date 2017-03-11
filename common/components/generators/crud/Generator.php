@@ -1,5 +1,5 @@
 <?php
-namespace common\components\gii\crud;
+namespace common\components\generators\crud;
 
 use Yii;
 use yii\gii\CodeFile;
@@ -11,7 +11,6 @@ use yii\helpers\VarDumper;
  */
 class Generator extends \yii\gii\generators\crud\Generator
 {
-
     /**
      * @inheritdoc
      */
@@ -56,7 +55,15 @@ class Generator extends \yii\gii\generators\crud\Generator
             }
         }
         $column = $tableSchema->columns[$attribute];
-        if ($column->phpType === 'boolean') {
+        $fks = [];
+        if($tableSchema->foreignKeys){
+            foreach($tableSchema->foreignKeys as $fk){
+                $fks [$fk[0].'_id']= ucfirst($fk[0]);
+            }
+        }
+        if(array_key_exists($column->name, $fks)){
+            return "\$form->field(\$model, '$attribute')->dropDownList(ArrayHelper::map({$fks[$column->name]}::find()->all(),'id', 'name'))";
+        } elseif ($column->phpType === 'boolean') {
             return "\$form->field(\$model, '$attribute')->checkbox()";
         } elseif ($column->type === 'text') {
             return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";

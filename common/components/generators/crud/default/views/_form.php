@@ -4,23 +4,29 @@ use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
-/* @var $generator yii\gii\generators\crud\Generator */
+/* @var $generator common\components\generators\crud\Generator */
 
 /* @var $model \yii\db\ActiveRecord */
 $model = new $generator->modelClass();
+$modelClass = ltrim($generator->modelClass, '\\');
 $safeAttributes = $model->safeAttributes();
 if (empty($safeAttributes)) {
     $safeAttributes = $model->attributes();
 }
-
-echo "<?php\n";
+echo "<?php\n\n";
+if($fks = $generator->tableSchema->foreignKeys){
+    echo 'use yii\helpers\ArrayHelper;'.PHP_EOL;
+    foreach($fks as $fk){
+        $fModel = ucfirst($fk[0]);
+        echo 'use ' . str_replace(ucfirst($model::tableName()), $fModel, $modelClass) . ";\n";
+    }
+}
 ?>
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
+/* @var $model <?= $modelClass ?> */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
