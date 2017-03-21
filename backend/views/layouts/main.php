@@ -28,8 +28,9 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+    $label = ($db = Yii::$app->session->get('db')) ? Db::findOne($db)->name : Yii::$app->name;
     NavBar::begin([
-        'brandLabel' => ($db = Yii::$app->session->get('db')) ? Db::findOne($db)->name : Yii::$app->name,
+        'brandLabel' => '<img src="/img/logo.png" alt="project generator constructor">' . Html::tag('span', $label),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',

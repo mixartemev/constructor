@@ -109,3 +109,16 @@ a.desc:after {
 .nav > li > form > button:hover {
     text-decoration: none;
 }
+
+.navbar-brand > img {
+    display: inline;
+}
+.navbar-brand {
+    padding: 0;
+    font-size: 20px;
+}
+.navbar-brand span{
+    margin-left: 14px;
+    line-height: 49px;
+    vertical-align: -8px;
+}
