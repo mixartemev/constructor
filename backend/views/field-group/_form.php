@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'id_table')->dropDownList(ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'name')) ?>
 

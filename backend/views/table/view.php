@@ -13,6 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="table-view">
+
+    <h1>Таблица <?= $model->title ?: $model->name ?></h1>
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
@@ -23,14 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-        ],
-    ]) ?>
 
     <?= $this->render('../field/index', ['dataProvider' => $fieldDataProvider]) ?>
 

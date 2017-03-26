@@ -83,7 +83,7 @@ class FieldController extends CommonController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->goBack('index');
+            return $this->redirect(['table/view', 'id' => $model->id_table]);
         } else {
             return $this->render('update', [
                 'model' => $model,
