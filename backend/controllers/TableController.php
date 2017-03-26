@@ -13,12 +13,12 @@ use yii\web\NotFoundHttpException;
 /**
  * TableController implements the CRUD actions for Table model.
  *
- * @property string $dbName
+ * @property Db $db
  */
 class TableController extends CommonController
 {
     /**
-     * @return Db $Db
+     * @return Db
      */
     public function getDb(){
         return Db::findOne($this->session->get('db'));
@@ -94,7 +94,7 @@ class TableController extends CommonController
     public function actionCreate()
     {
         $model = new Table();
-
+        $model->id_db = $this->db->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
