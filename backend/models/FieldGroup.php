@@ -9,8 +9,10 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
+ * @property integer $id_table
  *
  * @property Field[] $fields
+ * @property Table $idTable
  */
 class FieldGroup extends \yii\db\ActiveRecord
 {
@@ -28,9 +30,10 @@ class FieldGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name'], 'required'],
-            [['id'], 'integer'],
+            [['name', 'id_table'], 'required'],
+            [['id_table'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
     }
 
@@ -42,6 +45,7 @@ class FieldGroup extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
+            'id_table' => Yii::t('app', 'Id Table'),
         ];
     }
 
@@ -51,5 +55,13 @@ class FieldGroup extends \yii\db\ActiveRecord
     public function getFields()
     {
         return $this->hasMany(Field::className(), ['id_group' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdTable()
+    {
+        return $this->hasOne(Table::className(), ['id' => 'id_table']);
     }
 }

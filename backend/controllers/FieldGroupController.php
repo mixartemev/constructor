@@ -5,30 +5,14 @@ namespace backend\controllers;
 use Yii;
 use backend\models\FieldGroup;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * FieldGroupController implements the CRUD actions for FieldGroup model.
  */
-class FieldGroupController extends Controller
+class FieldGroupController extends CommonController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all FieldGroup models.
      * @return mixed
