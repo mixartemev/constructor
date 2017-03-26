@@ -144,7 +144,7 @@ use yii\widgets\Pjax;
 				'footer' => Html::activeDropDownList(
 					$newField,
 					'id_group',
-					ArrayHelper::map(FieldGroup::find()->all(), 'id', 'name'),
+					ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'name'),
 					['class' => 'form-control', 'prompt' => 'No Group']
 				)
 			],

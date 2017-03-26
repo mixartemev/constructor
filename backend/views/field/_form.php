@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 	<?= $form->field($model, 'signed')->checkbox() ?>
 	<?= $form->field($model, 'unique')->checkbox() ?>
 
-	<?= $form->field($model, 'id_group')->dropDownList(ArrayHelper::map(\backend\models\FieldGroup::find()->all(), 'id', 'name'), ['prompt' => 'No Group']) ?>
+	<?= $form->field($model, 'id_group')->dropDownList(ArrayHelper::map(\backend\models\FieldGroup::find()->where(['id_table' => $model->id_table])->all(), 'id', 'name'), ['prompt' => 'No Group']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
