@@ -17,6 +17,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'type')->dropDownList(ArrayHelper::map(\backend\models\Type::find()->all(), 'id', 'name')) ?>
 
+	<?= $form->field($model, 'null')->checkbox() ?>
+	<?= $form->field($model, 'signed')->checkbox() ?>
+	<?= $form->field($model, 'unique')->checkbox() ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
