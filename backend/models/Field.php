@@ -13,6 +13,7 @@ use himiklab\sortablegrid\SortableGridBehavior;
  * @property integer $id_type
  * @property integer $fk
  * @property integer $sort
+ * @property int $id_group
  * @property bool $null
  * @property bool $signed
  * @property bool $unique
@@ -98,5 +99,13 @@ class Field extends Common
     public function getFkTable()
     {
         return $this->hasOne(Table::className(), ['id' => 'fk'])->inverseOf('refs');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFieldGroup()
+    {
+        return $this->hasOne(FieldGroup::className(), ['id' => 'id_group'])->inverseOf('fields');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use backend\models\Field;
+use backend\models\FieldGroup;
 use backend\models\Table;
 use backend\models\Type;
 use himiklab\sortablegrid\SortableGridView;
@@ -115,6 +116,26 @@ use yii\widgets\Pjax;
                     ['label' => false]
                 )
             ],
+			[
+				'attribute' => 'id_group',
+				'format' => 'raw',
+				'value' => function($model){
+					/** @var Field $model */
+					return $model->id_group
+						? Html::a(
+							$model->fieldGroup->name,
+							Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
+							['title' => 'Группа '.$model->fieldGroup]
+						)
+						: '';
+				},
+				'footer' => Html::activeDropDownList(
+					$newField,
+					'id_group',
+					ArrayHelper::map(FieldGroup::find()->all(), 'id', 'name'),
+					['class' => 'form-control', 'prompt' => 'No Group']
+				)
+			],
             [
                 'options' => ['width' => 30],
                 'format' => 'raw',

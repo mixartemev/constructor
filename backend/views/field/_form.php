@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->dropDownList(ArrayHelper::map(\backend\models\Type::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'id_type')->dropDownList(ArrayHelper::map(\backend\models\Type::find()->all(), 'id', 'name')) ?>
 
 	<?= $form->field($model, 'null')->checkbox() ?>
 	<?= $form->field($model, 'signed')->checkbox() ?>
