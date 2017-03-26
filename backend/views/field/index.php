@@ -29,13 +29,25 @@ use yii\widgets\Pjax;
                 'footer' => Html::beginForm(['/field/create', 'id_table' => $id_table])
             ],
             [
+                'attribute' => 'title',
+                'format' => 'raw',
+                'value' => function($model,$key){
+                    return Html::a(
+                        $model->title,
+                        Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
+                        ['title' => 'Просмотр поля '.$model->title]
+                    );
+                },
+                'footer' => Html::activeTextInput($newField = new Field(), 'title', ['class' => 'form-control'])
+            ],
+            [
                 'attribute' => 'name',
                 'format' => 'raw',
                 'value' => function($model,$key){
                     return Html::a(
                         $model->name,
-                        Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
-                        ['title' => 'Просмотр поля '.$model->name]
+                        Yii::$app->getUrlManager()->createUrl(['field/update','id' => $key]),
+                        ['title' => 'Изменение поля '.$model->name]
                     );
                 },
                 'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control', 'required' => true])
@@ -45,9 +57,9 @@ use yii\widgets\Pjax;
                 'format' => 'raw',
                 'value' => function($model){
                     return Html::a(
-                        $model->type->name,
+                        $model->type->title ?: $model->type->name,
                         Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
-                        ['title' => 'Просмотр типа '.$model->type->name]
+                        ['title' => 'Просмотр типа '.$model->type->title ?: $model->type->name]
                     );
                 },
                 'footer' => Html::activeDropDownList(
@@ -125,29 +137,17 @@ use yii\widgets\Pjax;
 						? Html::a(
 							$model->fieldGroup->name,
 							Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
-							['title' => 'Группа '.$model->fieldGroup]
+							['title' => 'Группа '.$model->fieldGroup->name]
 						)
 						: '';
 				},
 				'footer' => Html::activeDropDownList(
 					$newField,
 					'id_group',
-					ArrayHelper::map(FieldGroup::find()->all(), 'id', 'name'),
+					ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'name'),
 					['class' => 'form-control', 'prompt' => 'No Group']
 				)
 			],
-            [
-                'options' => ['width' => 30],
-                'format' => 'raw',
-                'value' =>  function($model,$key) {
-                    return Html::a(
-                        '<span class="glyphicon glyphicon-pencil"></span>',
-                        Yii::$app->getUrlManager()->createUrl(['field/update', 'id' => $key]),
-                        ['title' => 'Редактирование поля ' . $model->name]
-                    );
-                },
-                'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
-            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => 30],

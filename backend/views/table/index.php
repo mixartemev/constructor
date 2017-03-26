@@ -22,29 +22,35 @@ $this->params['breadcrumbs'][] = $this->title;
 				'footer' => Html::beginForm('/table/create')
 			],
             [
+                'attribute' => 'title',
+                'format' => 'raw',
+                'value' => function($model,$key){
+                    return Html::a(
+                        $model->title,
+                        Yii::$app->getUrlManager()->createUrl(['table/view','id' => $key]),
+                        [
+                            'title' => 'Просмотр таблицы '.$model->title,
+                            'class' => $model->gen_crud ? '' : 'black'
+                        ]
+                    );
+                },
+                'footer' => Html::activeTextInput(new Table(), 'title', ['class' => 'form-control'])
+            ],
+            [
                 'attribute' => 'name',
                 'format' => 'raw',
                 'value' => function($model,$key){
                     return Html::a(
                         $model->name,
-                        Yii::$app->getUrlManager()->createUrl(['table/view','id' => $key]),
-                        ['title' => 'Просмотр таблицы '.$model->name]
+                        Yii::$app->getUrlManager()->createUrl(['table/update','id' => $key]),
+                        [
+                            'title' => 'Изменение таблицы '.$model->name,
+                            'class' => $model->gen_crud ? '' : 'black'
+                        ]
                     );
                 },
                 'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control', 'required' => true])
             ],
-			[
-				'options' => ['width' => 30],
-				'format' => 'raw',
-				'value' =>  function($model,$key) {
-					return Html::a(
-						'<span class="glyphicon glyphicon-pencil"></span>',
-						Yii::$app->getUrlManager()->createUrl(['table/update', 'id' => $key]),
-						['title' => 'Редактирование таблицы ' . $model->name]
-					);
-				},
-				'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
-			],
             [
                 'options' => ['width' => 30],
                 'format' => 'raw',

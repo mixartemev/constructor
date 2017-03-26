@@ -28,8 +28,9 @@ class Db extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name', 'id_user'], 'required'],
             [['name'], 'string', 'max' => 255],
+            [['id_user'], 'integer'],
         ];
     }
 

@@ -29,7 +29,7 @@ class Type extends ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['name'], 'string', 'max' => 63],
+            [['name', 'title'], 'string', 'max' => 63],
         ];
     }
 
