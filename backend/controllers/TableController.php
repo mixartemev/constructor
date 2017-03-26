@@ -52,6 +52,7 @@ class TableController extends CommonController
                     ]
                 ],
             ]);
+			$dataProvider->pagination->pageSize=50;
             return $this->render('index', [
                 'dataProvider' => $dataProvider,
             ]);
