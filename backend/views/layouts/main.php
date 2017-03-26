@@ -38,7 +38,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Tables', 'url' => ['/table']],
-        ['label' => 'Relations', 'url' => ['/relation']],
+        //['label' => 'Relations', 'url' => ['/relation']],
         ['label' => 'Types', 'url' => ['/type']],
         ['label' => 'Groups', 'url' => ['/field-group']],
     ];

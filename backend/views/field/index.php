@@ -57,9 +57,9 @@ use yii\widgets\Pjax;
                 'format' => 'raw',
                 'value' => function($model){
                     return Html::a(
-                        $model->type->name,
+                        $model->type->title ?: $model->type->name,
                         Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
-                        ['title' => 'Просмотр типа '.$model->type->name]
+                        ['title' => 'Просмотр типа '.$model->type->title ?: $model->type->name]
                     );
                 },
                 'footer' => Html::activeDropDownList(
