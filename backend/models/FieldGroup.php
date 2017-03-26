@@ -32,7 +32,7 @@ class FieldGroup extends \yii\db\ActiveRecord
         return [
             [['name', 'id_table'], 'required'],
             [['id_table'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'title'], 'string', 'max' => 255],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
     }

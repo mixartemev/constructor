@@ -125,7 +125,7 @@ use yii\widgets\Pjax;
 						? Html::a(
 							$model->fieldGroup->name,
 							Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
-							['title' => 'Группа '.$model->fieldGroup]
+							['title' => 'Группа '.$model->fieldGroup->name]
 						)
 						: '';
 				},

@@ -52,8 +52,8 @@ class Field extends Common
     {
         return [
             [['name', 'id_table'], 'required'],
-            [['id_table', 'id_type', 'sort', 'fk'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['id_table', 'id_type', 'id_group', 'sort', 'fk'], 'integer'],
+            [['name', 'title'], 'string', 'max' => 255],
             [['null', 'signed', 'unique'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table', 'fk'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],

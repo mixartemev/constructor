@@ -22,13 +22,31 @@ $this->params['breadcrumbs'][] = $this->title;
 				'footer' => Html::beginForm('/table/create')
 			],
             [
-                'attribute' => 'name',
+                'attribute' => 'title',
                 'format' => 'raw',
                 'value' => function($model,$key){
                     return Html::a(
                         $model->name,
                         Yii::$app->getUrlManager()->createUrl(['table/view','id' => $key]),
-                        ['title' => 'Просмотр таблицы '.$model->name]
+                        [
+                            'title' => 'Просмотр таблицы '.$model->name,
+                            'class' => $model->gen_crud ? '' : 'black'
+                        ]
+                    );
+                },
+                'footer' => Html::activeTextInput(new Table(), 'title', ['class' => 'form-control'])
+            ],
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function($model,$key){
+                    return Html::a(
+                        $model->name,
+                        Yii::$app->getUrlManager()->createUrl(['table/update','id' => $key]),
+                        [
+                            'title' => 'Изменение таблицы '.$model->name,
+                            'class' => $model->gen_crud ? '' : 'black'
+                        ]
                     );
                 },
                 'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control', 'required' => true])
