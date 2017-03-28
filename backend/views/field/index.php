@@ -76,16 +76,16 @@ use yii\widgets\Pjax;
                     /** @var Field $model */
                     return $model->fk
                         ? Html::a(
-                            $model->fkTable->name,
+                            $model->fkTable->title,
                             Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->fk]),
-                            ['title' => 'Просмотр внешней таблицы '.$model->fkTable->name]
+                            ['title' => 'Просмотр внешней таблицы '.$model->fkTable->title]
                         )
                         : '';
                 },
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'fk',
-                    ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'name'),
+					ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'title'),
                     ['class' => 'form-control', 'prompt' => 'No FK']
                 )
             ],
