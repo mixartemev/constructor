@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use himiklab\sortablegrid\SortableGridBehavior;
+use Yii;
 
 /**
  * This is the model class for table "field".
@@ -17,6 +18,7 @@ use himiklab\sortablegrid\SortableGridBehavior;
  * @property bool $null
  * @property bool $signed
  * @property bool $unique
+ * @property bool $list_view
  *
  * @property Type $type
  * @property Table $table
@@ -54,7 +56,7 @@ class Field extends Common
             [['name', 'id_table'], 'required'],
             [['id_table', 'id_type', 'id_group', 'sort', 'fk'], 'integer'],
             [['name', 'title'], 'string', 'max' => 255],
-            [['null', 'signed', 'unique'], 'boolean'],
+            [['null', 'signed', 'unique', 'list_view'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table', 'fk'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -67,13 +69,14 @@ class Field extends Common
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'table.name' => 'Table',
-            'type.name' => 'Type',
-            'fk' => 'FK',
-            'null' => 'Null',
-            'signed' => 'Signed',
-            'unique' => 'Unique',
+            'name' => Yii::t('app', 'Name'),
+            'table.name' => Yii::t('app', 'Table'),
+            'type.name' => Yii::t('app', 'Type'),
+            'fk' => Yii::t('app', 'FK'),
+            'null' => Yii::t('app', 'Null'),
+            'signed' => Yii::t('app', 'Signed'),
+            'unique' => Yii::t('app', 'Unique'),
+            'list_view' => Yii::t('app', 'List view'),
         ];
     }
 

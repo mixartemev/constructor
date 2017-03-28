@@ -107,7 +107,7 @@ use yii\widgets\Pjax;
                 'format' => 'raw',
                 'value' => function($model){
                     /** @var Field $model */
-                    return Html::checkbox('null', $model->signed, ['disabled' => true]);
+                    return Html::checkbox('signed', $model->signed, ['disabled' => true]);
                 },
                 'footer' => Html::activeCheckbox(
                     $newField,
@@ -146,6 +146,19 @@ use yii\widgets\Pjax;
                     'id_group',
                     ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'title'),
                     ['class' => 'form-control', 'prompt' => 'No Group']
+                )
+            ],
+            [
+                'attribute' => 'list_view',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return Html::checkbox('list_view', $model->list_view, ['disabled' => true]);
+                },
+                'footer' => Html::activeCheckbox(
+                    $newField,
+                    'list_view',
+                    ['label' => false]
                 )
             ],
             [

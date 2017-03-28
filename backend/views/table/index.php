@@ -4,6 +4,7 @@ use backend\models\Table;
 use himiklab\sortablegrid\SortableGridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     );
                 },
-                'footer' => Html::activeTextInput(new Table(), 'title', ['class' => 'form-control'])
+                'footer' => Html::activeTextInput(($newTable = new Table()), 'title', ['class' => 'form-control'])
             ],
             [
                 'attribute' => 'name',
@@ -49,7 +50,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     );
                 },
-                'footer' => Html::activeTextInput(new Table(), 'name', ['class' => 'form-control', 'required' => true])
+                'footer' => Html::activeTextInput($newTable, 'name', ['class' => 'form-control', 'required' => true])
+            ],
+            [
+                'attribute' => 'gen_crud',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Table $model */
+                    return Html::checkbox('gen_crud', $model->gen_crud, ['disabled' => true]);
+                },
+                'footer' => Html::activeCheckbox(
+                    $newTable,
+                    'gen_crud',
+                    ['label' => false]
+                )
             ],
             [
                 'options' => ['width' => 30],

@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "field_group".
@@ -10,11 +11,12 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property integer $id_table
+ * @property bool $collapsed
  *
  * @property Field[] $fields
- * @property Table $idTable
+ * @property Table $table
  */
-class FieldGroup extends \yii\db\ActiveRecord
+class FieldGroup extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -32,6 +34,7 @@ class FieldGroup extends \yii\db\ActiveRecord
         return [
             [['name', 'id_table'], 'required'],
             [['id_table'], 'integer'],
+            [['collapsed'], 'boolean'],
             [['name', 'title'], 'string', 'max' => 255],
             [['id_table'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -45,7 +48,8 @@ class FieldGroup extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'table.name' => Yii::t('app', 'Table'),
+            'collapsed' => Yii::t('app', 'Collapsed'),
+            'id_table' => Yii::t('app', 'Table'),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -40,7 +41,8 @@ class Type extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Тип',
+            'name' => Yii::t('app', 'Name'),
+            'title' => Yii::t('app', 'Title'),
         ];
     }
 

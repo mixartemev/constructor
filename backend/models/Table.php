@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use himiklab\sortablegrid\SortableGridBehavior;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -26,6 +27,9 @@ class Table extends ActiveRecord
         return 'table';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -56,8 +60,8 @@ class Table extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'название',
-            'sort' => 'сортировка',
+            'name' => Yii::t('app', 'Name'),
+            'sort' => Yii::t('app', 'Sort'),
         ];
     }
 
