@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -9,6 +10,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $name
+ * @property string $user_id
  *
  * @property Table[] $tables
  */
@@ -41,7 +43,8 @@ class Db extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => Yii::t('app', 'Name'),
+            'id_user' => Yii::t('app', 'Owner'),
         ];
     }
 

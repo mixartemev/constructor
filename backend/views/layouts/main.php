@@ -37,18 +37,18 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Tables', 'url' => ['/table']],
+        ['label' => Yii::t('app', 'Tables'), 'url' => ['/table']],
         //['label' => 'Relations', 'url' => ['/relation']],
-        ['label' => 'Types', 'url' => ['/type']],
-        ['label' => 'Groups', 'url' => ['/field-group']],
+        ['label' => Yii::t('app', 'Types'), 'url' => ['/type']],
+        ['label' => Yii::t('app', 'Groups'), 'url' => ['/field-group']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+				Yii::t('app', 'Logout ({username})', ['username' => Yii::$app->user->identity->username]),
                 ['class' => 'btn btn-link']
             )
             . Html::endForm()

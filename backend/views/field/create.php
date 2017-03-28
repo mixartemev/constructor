@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Field */
 
-$this->title = 'Create Field';
-$this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['table/index']];
+$this->title = Yii::t('app', 'Create Field');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tables'), 'url' => ['table/index']];
 $this->params['breadcrumbs'][] = ['label' => $model->table->name, 'url' => ['table/view','id' => $model->id_table]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

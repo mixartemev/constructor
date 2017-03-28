@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $model->name,
                         Yii::$app->getUrlManager()->createUrl(['db/check', 'id' => $key]),
                         [
-                            'title' => 'Check DB ' . $model->name,
+                            'title' => Yii::t('app', 'Check DB ') . $model->name,
                             //'data-method' => 'get',
                         ]
                     );
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(
                         '<span class="glyphicon glyphicon-pencil"></span>',
                         Yii::$app->getUrlManager()->createUrl(['db/update', 'id' => $key]),
-                        ['title' => 'Edin name ' . $model->name]
+                        ['title' => Yii::t('app', 'Edit name ') . $model->name]
                     );
                 },
                 'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         '<span class="glyphicon glyphicon-trash"></span>',
                         Yii::$app->getUrlManager()->createUrl(['db/delete','id' => $key]),
                         [
-                            'title' => Yii::t('yii', 'Delete db '.$model->name),
+                            'title' => Yii::t('app', 'Delete db ') . $model->name,
                             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post',
                         ]

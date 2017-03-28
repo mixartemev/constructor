@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model backend\models\Table */
 
 $this->title = 'Create Table';
-$this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tables'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="table-create">

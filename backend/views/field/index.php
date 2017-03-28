@@ -35,7 +35,7 @@ use yii\widgets\Pjax;
                     return Html::a(
                         $model->title,
                         Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
-                        ['title' => 'Просмотр поля '.$model->title]
+                        ['title' => Yii::t('app', 'View field ') . $model->title]
                     );
                 },
                 'footer' => Html::activeTextInput($newField = new Field(), 'title', ['class' => 'form-control'])
@@ -47,7 +47,7 @@ use yii\widgets\Pjax;
                     return Html::a(
                         $model->name,
                         Yii::$app->getUrlManager()->createUrl(['field/update','id' => $key]),
-                        ['title' => 'Изменение поля '.$model->name]
+                        ['title' => Yii::t('app', 'Edit field ') . $model->name]
                     );
                 },
                 'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control', 'required' => true])
@@ -59,13 +59,13 @@ use yii\widgets\Pjax;
                     return Html::a(
                         $model->type->title ?: $model->type->name,
                         Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
-                        ['title' => 'Просмотр типа '.$model->type->title ?: $model->type->name]
+                        ['title' => Yii::t('app', 'View dataType ') . $model->type->title ?: $model->type->name]
                     );
                 },
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'id_type',
-                    ArrayHelper::map(Type::find()->all(), 'id', 'name'),
+                    ArrayHelper::map(Type::find()->all(), 'id', 'title'),
                     ['class' => 'form-control']
                 )
             ],
@@ -78,7 +78,7 @@ use yii\widgets\Pjax;
                         ? Html::a(
                             $model->fkTable->title,
                             Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->fk]),
-                            ['title' => 'Просмотр внешней таблицы '.$model->fkTable->title]
+                            ['title' => Yii::t('app', 'View FK ') . $model->fkTable->title]
                         )
                         : '';
                 },
@@ -137,7 +137,7 @@ use yii\widgets\Pjax;
                         ? Html::a(
                             $model->fieldGroup->title,
                             Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
-                            ['title' => 'Группа '.$model->fieldGroup->title]
+                            ['title' => Yii::t('app', 'View group ').$model->fieldGroup->title]
                         )
                         : '';
                 },
@@ -145,7 +145,7 @@ use yii\widgets\Pjax;
                     $newField,
                     'id_group',
                     ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'title'),
-                    ['class' => 'form-control', 'prompt' => 'No Group']
+                    ['class' => 'form-control', 'prompt' => Yii::t('app', 'No Group')]
                 )
             ],
             [
@@ -172,7 +172,7 @@ use yii\widgets\Pjax;
                             '<span class="glyphicon glyphicon-trash"></span>',
                             Yii::$app->getUrlManager()->createUrl(['field/delete','id' => $key, 'id_table' => $model->id_table]),
                             [
-                                'title' => Yii::t('yii', 'Delete field '.$model->name),
+                                'title' => Yii::t('app', 'Delete field ') . $model->name,
                                 'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                                 'data-method' => 'post',
                             ]);

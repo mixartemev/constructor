@@ -57,7 +57,7 @@ class TableController extends CommonController
                 'dataProvider' => $dataProvider,
             ]);
         }else{
-            $this->session->setFlash('warning', 'Check db at first');
+            $this->session->setFlash('warning', Yii::t('app', 'Check db at first'));
             return $this->redirect('/db');
         }
     }
@@ -149,7 +149,7 @@ class TableController extends CommonController
         if (($model = Table::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+			throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
 

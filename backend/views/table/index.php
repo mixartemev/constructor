@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tables';
+$this->title = Yii::t('app', 'Tables');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="table-index">
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $model->title,
                         Yii::$app->getUrlManager()->createUrl(['table/view','id' => $key]),
                         [
-                            'title' => 'Просмотр таблицы '.$model->title,
+                            'title' => Yii::t('app', 'View table ') . $model->title,
                             'class' => $model->gen_crud ? '' : 'black'
                         ]
                     );
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $model->name,
                         Yii::$app->getUrlManager()->createUrl(['table/update','id' => $key]),
                         [
-                            'title' => 'Изменение таблицы '.$model->name,
+                            'title' => Yii::t('app', 'Edit table ') . $model->name,
                             'class' => $model->gen_crud ? '' : 'black'
                         ]
                     );
@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         '<span class="glyphicon glyphicon-trash"></span>',
                         Yii::$app->getUrlManager()->createUrl(['table/delete','id' => $key]),
                         [
-                            'title' => Yii::t('yii', 'Delete table '.$model->name),
+                            'title' => Yii::t('app', 'Delete table '.$model->name),
                             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post',
                         ]

@@ -23,6 +23,7 @@ use Yii;
  * @property Type $type
  * @property Table $table
  * @property Table $fkTable
+ * @property fieldGroup $fieldGroup
  */
 class Field extends Common
 {

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(
                         $model->title,
                         Yii::$app->getUrlManager()->createUrl(['field-group/view','id' => $key]),
-                        ['title' => 'Просмотр группы '.$model->title]
+                        ['title' => Yii::t('app', 'View group ') . $model->title]
                     );
                 },
                 'footer' => Html::activeTextInput(($newGroup = new FieldGroup()), 'title', ['class' => 'form-control', 'required' => true])
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(
                         $model->name,
                         Yii::$app->getUrlManager()->createUrl(['field-group/update','id' => $key]),
-                        ['title' => 'Изменение группы '.$model->name]
+                        ['title' => Yii::t('app', 'Edit group ') . $model->name]
                     );
                 },
                 'footer' => Html::activeTextInput($newGroup, 'name', ['class' => 'form-control', 'required' => true])
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(
                             $model->table->title,
                             Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_table]),
-                            ['title' => 'Просмотр таблицы '.$model->table->title]
+                            ['title' => Yii::t('app', 'View table ') . $model->table->title]
                         );
                 },
                 'footer' => Html::activeDropDownList(
@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         '<span class="glyphicon glyphicon-trash"></span>',
                         Yii::$app->getUrlManager()->createUrl(['field-group/delete','id' => $key]),
                         [
-                            'title' => Yii::t('yii', 'Delete group '.$model->name),
+                            'title' => Yii::t('app', 'Delete group '.$model->name),
                             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post',
                         ]

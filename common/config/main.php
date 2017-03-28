@@ -1,10 +1,18 @@
 <?php
 $config = [
+	'language'=>'ru-RU',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+		'i18n' => [
+			'translations' => [
+				'*' => [
+					'class' => 'yii\i18n\PhpMessageSource'
+				],
+			],
+		],
     ],
 ];
 if (!YII_ENV_TEST) {

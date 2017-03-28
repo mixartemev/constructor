@@ -10,6 +10,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property string $name
+ * @property string $title
  * @property integer $id_table
  * @property bool $collapsed
  *
@@ -46,7 +47,7 @@ class FieldGroup extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
             'collapsed' => Yii::t('app', 'Collapsed'),
             'id_table' => Yii::t('app', 'Table'),

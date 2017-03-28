@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /* @var $model backend\models\Type */
 
 $this->title = 'Update Type: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Types', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Types'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="type-update">
 

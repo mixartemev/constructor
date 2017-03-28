@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  *
  * @property int $id
  * @property string $name
+ * @property string $title
  * @property int $sort
  * @property int $gen_crud
  * @property int $id_db
