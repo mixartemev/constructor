@@ -52,6 +52,7 @@ class TableController extends CommonController
                     ]
                 ],
             ]);
+            $dataProvider->pagination->pageSize=100;
             return $this->render('index', [
                 'dataProvider' => $dataProvider,
             ]);
@@ -79,7 +80,7 @@ class TableController extends CommonController
                 ]
             ],
         ]);
-        $fieldDataProvider->pagination->pageSize=50;
+        $fieldDataProvider->pagination->pageSize=100;
         return $this->render('view', [
             'model' => $this->findModel($id),
             'fieldDataProvider' => $fieldDataProvider,
@@ -115,7 +116,7 @@ class TableController extends CommonController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

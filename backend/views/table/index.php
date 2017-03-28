@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'id',
                 'options' => ['width' => 50],
-				'footer' => Html::beginForm('/table/create')
-			],
+                'footer' => Html::beginForm('/table/create')
+            ],
             [
                 'attribute' => 'title',
                 'format' => 'raw',
@@ -65,8 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     );
                 },
-				'footer' => Html::endForm()
-			]
+                'footer' => Html::submitButton('+', ['class' => 'btn btn-success']) . Html::endForm()
+            ]
         ],
     ]); ?>
     <?php Pjax::end(); ?></div>

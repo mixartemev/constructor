@@ -128,26 +128,26 @@ use yii\widgets\Pjax;
                     ['label' => false]
                 )
             ],
-			[
-				'attribute' => 'id_group',
-				'format' => 'raw',
-				'value' => function($model){
-					/** @var Field $model */
-					return $model->id_group
-						? Html::a(
-							$model->fieldGroup->name,
-							Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
-							['title' => 'Группа '.$model->fieldGroup->name]
-						)
-						: '';
-				},
-				'footer' => Html::activeDropDownList(
-					$newField,
-					'id_group',
-					ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'name'),
-					['class' => 'form-control', 'prompt' => 'No Group']
-				)
-			],
+            [
+                'attribute' => 'id_group',
+                'format' => 'raw',
+                'value' => function($model){
+                    /** @var Field $model */
+                    return $model->id_group
+                        ? Html::a(
+                            $model->fieldGroup->name,
+                            Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
+                            ['title' => 'Группа '.$model->fieldGroup->name]
+                        )
+                        : '';
+                },
+                'footer' => Html::activeDropDownList(
+                    $newField,
+                    'id_group',
+                    ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'name'),
+                    ['class' => 'form-control', 'prompt' => 'No Group']
+                )
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'options' => ['width' => 30],
@@ -165,7 +165,7 @@ use yii\widgets\Pjax;
                             ]);
                     }
                 ],
-                'footer' => Html::endForm()
+                'footer' => Html::submitButton('+', ['class' => 'btn btn-success']) . Html::endForm()
             ]
         ]
     ]); ?>
