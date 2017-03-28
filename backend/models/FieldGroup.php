@@ -45,7 +45,7 @@ class FieldGroup extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
-            'id_table' => Yii::t('app', 'Id Table'),
+            'table.name' => Yii::t('app', 'Table'),
         ];
     }
 
@@ -60,7 +60,7 @@ class FieldGroup extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdTable()
+    public function getTable()
     {
         return $this->hasOne(Table::className(), ['id' => 'id_table']);
     }

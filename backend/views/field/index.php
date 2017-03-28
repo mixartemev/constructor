@@ -135,16 +135,16 @@ use yii\widgets\Pjax;
                     /** @var Field $model */
                     return $model->id_group
                         ? Html::a(
-                            $model->fieldGroup->name,
+                            $model->fieldGroup->title,
                             Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
-                            ['title' => 'Группа '.$model->fieldGroup->name]
+                            ['title' => 'Группа '.$model->fieldGroup->title]
                         )
                         : '';
                 },
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'id_group',
-                    ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'name'),
+                    ArrayHelper::map(FieldGroup::find()->where(['id_table' => Yii::$app->request->get('id')])->all(), 'id', 'title'),
                     ['class' => 'form-control', 'prompt' => 'No Group']
                 )
             ],
