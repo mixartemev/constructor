@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a(
                         '<span class="glyphicon glyphicon-pencil"></span>',
                         Yii::$app->getUrlManager()->createUrl(['db/update', 'id' => $key]),
-                        ['title' => Yii::t('app', 'Edit name ') . $model->name]
+                        ['title' => Yii::t('app', 'Edit db ') . $model->name]
                     );
                 },
                 'footer' => Html::submitButton('+', ['class' => 'btn btn-success'])
