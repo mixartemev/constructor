@@ -163,6 +163,7 @@ class TableController extends CommonController
         print 'cd ' . $this->getDb()->name . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
         print '#setup db-settings in main-local config' . "\r\n";
+        print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
         print $begin . 'php yii migrate --interactive=0' . "\r\n";
 
 #set db ssettings'."\r\n";
