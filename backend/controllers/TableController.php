@@ -163,6 +163,7 @@ class TableController extends CommonController
         print 'cd ' . $this->getDb()->name . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
         print '#setup db-settings in main-local config' . "\r\n";
+        print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
         print $begin . 'php yii migrate --interactive=0' . "\r\n";
 
 #set db ssettings'."\r\n";
@@ -170,14 +171,19 @@ class TableController extends CommonController
         foreach (Table::find()->where(['id_db' => $this->getDb()->id])->orderBy('sort')->all() as $table){
             $fields = [];
             /** @var Field $field */
-            foreach ($table->fields as $field){
-                $fields []= $field->name
-                    . ':' . $field->type->name
-                    . ($field->null ? '' : ':notNull')
-                    . ($field->unique ? ':unique' : '')
-                    . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
-                    . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
+            if($flds = $table->fields){
+                foreach ($flds as $field){
+                    $fields []= $field->name
+                        . ':' . $field->type->name
+                        . ($field->null ? '' : ':notNull')
+                        . ($field->unique ? ':unique' : '')
+                        . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
+                        . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
+                }
+            }else{
+                $fields []= 'name:string(255):notNull:unique';
             }
+
             print $begin . 'php yii migrate/create create_'.$table->name.'_table --fields="id:primaryKey:notNull:unsigned,'. implode(',', $fields) . '" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
             print $begin . 'php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.ucfirst($table->name).'  --interactive=0'."\r\n";
