@@ -192,7 +192,7 @@ class TableController extends CommonController
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = ucfirst($table->name);
             print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
-            print '</pre>';
         }
+		print '</pre>';
     }
 }
