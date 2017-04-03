@@ -8,6 +8,8 @@ use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -187,10 +189,11 @@ class TableController extends CommonController
 
             print $begin . 'php yii migrate/create create_'.$table->name.'_table --fields="id:primaryKey:notNull:unsigned,'. implode(',', $fields) . '" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
-            print $begin . 'php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.ucfirst($table->name).'  --interactive=0'."\r\n";
+            print $begin . 'sleep 1 && php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.Inflector::camelize($table->name).'  --interactive=0'."\r\n";
+
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
-            $class = ucfirst($table->name);
+            $class = Inflector::camelize($table->name);
             print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }
 		print '</pre>';
