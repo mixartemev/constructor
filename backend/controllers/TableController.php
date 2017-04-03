@@ -159,7 +159,7 @@ class TableController extends CommonController
      */
     public function actionGen($ns = 'app', $begin = '')
     {
-        print 'composer create-project --prefer-dist yiisoft/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
+        print '<pre>composer create-project --prefer-dist yiisoft/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
         print 'cd ' . $this->getDb()->name . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
         print '#setup db-settings in main-local config' . "\r\n";
@@ -184,7 +184,7 @@ class TableController extends CommonController
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = ucfirst($table->name);
-            print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+            print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n</pre>";
         }
     }
 }
