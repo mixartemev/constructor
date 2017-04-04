@@ -192,7 +192,7 @@ class TableController extends CommonController
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
             print $begin . 'sleep 0.5 && php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
-                  Inflector::camelize($table->name).' generateLabelsFromComments=1  --interactive=0'."\r\n";
+                  Inflector::camelize($table->name).' --generateLabelsFromComments=1  --interactive=0'."\r\n";
 
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
