@@ -58,7 +58,7 @@ class Generator extends \yii\gii\generators\crud\Generator
         $fks = [];
         if($tableSchema->foreignKeys){
             foreach($tableSchema->foreignKeys as $fk){
-                $fks [$fk[0].'_id']= ucfirst($fk[0]);
+                $fks [$fk[0].'_id']= Inflector::camelize($fk[0]);
             }
         }
         if(array_key_exists($column->name, $fks)){
