@@ -161,11 +161,12 @@ class TableController extends CommonController
     public function actionGen($ns = 'app', $begin = '')
     {
         print '<pre>';
-        print 'composer create-project --prefer-dist mixartemev/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
-        print 'cd ' . $this->getDb()->name . "\r\n";
+        print 'git clone https://github.com/mixartemev/yii2-app-advanced.git ' . $this->getDb()->name . "\r\n";
+		print 'cd ' . $this->getDb()->name . "\r\n";
+		print 'composer install' . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
-        print '#setup db-settings in main-local config' . "\r\n";
-        print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
+		print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
+		print '#create db if it\'s not and setup login and password for db connection in main-local config' . "\r\n";
         print $begin . 'php yii migrate --interactive=0' . "\r\n";
 
 #set db ssettings'."\r\n";
