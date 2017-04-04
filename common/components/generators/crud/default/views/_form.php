@@ -17,8 +17,8 @@ echo "<?php\n\n";
 if($fks = $generator->tableSchema->foreignKeys){
     echo 'use yii\helpers\ArrayHelper;'.PHP_EOL;
     foreach($fks as $fk){
-        $fModel = ucfirst($fk[0]);
-        echo 'use ' . str_replace(ucfirst($model::tableName()), $fModel, $modelClass) . ";\n";
+        $fModel = Inflector::camelize($fk[0]);
+        echo 'use ' . str_replace(Inflector::camelize($model::tableName()), $fModel, $modelClass) . ";\n";
     }
 }
 ?>

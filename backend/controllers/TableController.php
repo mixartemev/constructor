@@ -9,7 +9,6 @@ use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -151,7 +150,7 @@ class TableController extends CommonController
         if (($model = Table::findOne($id)) !== null) {
             return $model;
         } else {
-			throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
 
@@ -161,8 +160,8 @@ class TableController extends CommonController
      */
     public function actionGen($ns = 'app', $begin = '')
     {
-		print '<pre>';
-        print 'composer create-project --prefer-dist yiisoft/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
+        print '<pre>';
+        print 'composer create-project --prefer-dist mixartemev/yii2-app-advanced ' . $this->getDb()->name . "\r\n";
         print 'cd ' . $this->getDb()->name . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
         print '#setup db-settings in main-local config' . "\r\n";
@@ -177,25 +176,29 @@ class TableController extends CommonController
             if($flds = $table->fields){
                 foreach ($flds as $field){
                     $fields []= $field->name
-                        . ':' . $field->type->name
-                        . ($field->null ? '' : ':notNull')
-                        . ($field->unique ? ':unique' : '')
-                        . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
-                        . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '');
+                                . ':' . $field->type->name
+                                . ($field->null ? '' : ':notNull')
+                                . ($field->unique ? ':unique' : '')
+                                . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
+                                . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '')
+                                . ($field->title ? ':comment(\''.$field->title.'\')' : '');
                 }
             }else{
-                $fields []= 'name:string(255):notNull:unique';
+                $fields []= 'name:string(255):notNull:unique:comment(\'Название\')';
             }
 
-            print $begin . 'php yii migrate/create create_'.$table->name.'_table --fields="id:primaryKey:notNull:unsigned,'. implode(',', $fields) . '" --interactive=0'."\r\n";
+            print $begin . 'php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
+                  implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
-            print $begin . 'sleep 1 && php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.Inflector::camelize($table->name).'  --interactive=0'."\r\n";
+            print $begin . 'sleep 0.5 && php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
+                  Inflector::camelize($table->name).'  --interactive=0'."\r\n";
 
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = Inflector::camelize($table->name);
-            print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.$ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+            print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.
+                  $ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }
-		print '</pre>';
+        print '</pre>';
     }
 }
