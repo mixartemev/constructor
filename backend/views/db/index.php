@@ -1,6 +1,8 @@
 <?php
 
 use backend\models\Db;
+use common\models\User;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -35,7 +37,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     );
                 },
-                'footer' => Html::activeTextInput(new Db(), 'name', ['class' => 'form-control', 'required' => true])
+                'footer' => Html::activeTextInput(($newDb = new Db()), 'name', ['class' => 'form-control', 'required' => true])
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => 'user.username',
+                'footer' => Html::activeDropDownList(
+                    $newDb,
+                    'user_id',
+                    ArrayHelper::map( User::find()->all(), 'id', 'username'),
+                    ['class' => 'form-control']
+                )
             ],
             [
                 'options' => ['width' => 30],

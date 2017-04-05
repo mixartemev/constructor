@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -13,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $user_id
  *
  * @property Table[] $tables
+ * @property User $user
  */
 class Db extends ActiveRecord
 {
@@ -30,9 +32,9 @@ class Db extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'id_user'], 'required'],
+            [['name', 'user_id'], 'required'],
             [['name'], 'string', 'max' => 255],
-            [['id_user'], 'integer'],
+            [['user_id'], 'integer'],
         ];
     }
 
@@ -44,7 +46,7 @@ class Db extends ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
-            'id_user' => Yii::t('app', 'Owner'),
+            'user_id' => Yii::t('app', 'Owner'),
         ];
     }
 
@@ -54,5 +56,13 @@ class Db extends ActiveRecord
     public function getTables()
     {
         return $this->hasMany(Table::className(), ['id_db' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

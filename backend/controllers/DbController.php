@@ -217,7 +217,7 @@ class DbController extends CommonController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -250,7 +250,7 @@ class DbController extends CommonController
         if (($model = Db::findOne($id)) !== null) {
             return $model;
         } else {
-			throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
+            throw new NotFoundHttpException(Yii::t('yii', 'The requested page does not exist.'));
         }
     }
 }
