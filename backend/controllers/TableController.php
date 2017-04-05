@@ -191,14 +191,14 @@ class TableController extends CommonController
             print $begin . 'php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
-            print $begin . 'sleep 0.5 && php yii gii/model --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
-                  Inflector::camelize($table->name).' --generateLabelsFromComments=1  --interactive=0'."\r\n";
+            print $begin . 'sleep 0.5 && php yii gii/mod --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
+                  Inflector::camelize($table->name).' --generateLabelsFromComments=1 --overwrite=1  --interactive=0'."\r\n";
 
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = Inflector::camelize($table->name);
             print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.
-                  $ns.'\controllers\\'.$class.'Controller" --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
+                  $ns.'\controllers\\'.$class.'Controller" --overwrite=1 --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }
         print '</pre>';
     }
