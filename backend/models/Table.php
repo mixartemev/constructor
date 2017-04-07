@@ -71,7 +71,7 @@ class Table extends ActiveRecord
      */
     public function getFields()
     {
-        return $this->hasMany(Field::className(), ['id_table' => 'id'])->inverseOf('table');
+        return $this->hasMany(Field::className(), ['id_table' => 'id'])->inverseOf('table')->orderBy('sort');
     }
 
     /**
