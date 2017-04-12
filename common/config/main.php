@@ -25,6 +25,9 @@ if (!YII_ENV_TEST) {
             'construct' => [
                 'class' => 'common\components\generators\crud\Generator',
             ],
+            'mod' => [
+                'class' => 'common\components\generators\model\Generator',
+            ],
         ],
     ];
 }

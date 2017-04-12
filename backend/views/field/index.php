@@ -28,18 +28,7 @@ use yii\widgets\Pjax;
                 'options' => ['width' => 50],
                 'footer' => Html::beginForm(['/field/create', 'id_table' => $id_table])
             ],
-            [
-                'attribute' => 'title',
-                'format' => 'raw',
-                'value' => function($model,$key){
-                    return Html::a(
-                        $model->title,
-                        Yii::$app->getUrlManager()->createUrl(['field/view','id' => $key]),
-                        ['title' => Yii::t('app', 'View field ') . $model->title]
-                    );
-                },
-                'footer' => Html::activeTextInput($newField = new Field(), 'title', ['class' => 'form-control'])
-            ],
+            'title',
             [
                 'attribute' => 'name',
                 'format' => 'raw',

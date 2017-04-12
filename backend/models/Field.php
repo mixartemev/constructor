@@ -72,6 +72,7 @@ class Field extends Common
         return [
             'id' => 'ID',
             'name' => Yii::t('app', 'Name'),
+            'title' => Yii::t('app', 'Title'),
             'table.name' => Yii::t('app', 'Table'),
             'type.name' => Yii::t('app', 'Type'),
             'fk' => Yii::t('app', 'FK'),

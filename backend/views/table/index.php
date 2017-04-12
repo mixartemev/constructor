@@ -39,17 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'name',
-                'format' => 'raw',
-                'value' => function($model,$key){
-                    return Html::a(
-                        $model->name,
-                        Yii::$app->getUrlManager()->createUrl(['table/update','id' => $key]),
-                        [
-                            'title' => Yii::t('app', 'Edit table ') . $model->name,
-                            'class' => $model->gen_crud ? '' : 'black'
-                        ]
-                    );
-                },
                 'footer' => Html::activeTextInput($newTable, 'name', ['class' => 'form-control', 'required' => true])
             ],
             [

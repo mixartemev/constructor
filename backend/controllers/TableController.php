@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use backend\models\Db;
 use backend\models\Field;
+use backend\models\Junction;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\web\NotFoundHttpException;
 
@@ -74,7 +76,7 @@ class TableController extends CommonController
             'query' => Field::find()->where(['id_table' => $id])->joinWith('type'),
             'sort' => [
                 'attributes' => [
-                    'sort','id','name','type.name'
+                    'sort', 'id', 'name', 'title', 'type.name'
                 ],
                 'defaultOrder' => [
                     'sort' => SORT_ASC,
@@ -86,6 +88,19 @@ class TableController extends CommonController
             'model' => $this->findModel($id),
             'fieldDataProvider' => $fieldDataProvider,
         ]);
+    }
+
+    public function actionAddJunction($t1,$t2)
+    {
+        $model = new Table();
+        $model->id_db = $this->db->id;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -117,7 +132,7 @@ class TableController extends CommonController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -162,11 +177,11 @@ class TableController extends CommonController
     {
         print '<pre>';
         print 'git clone https://github.com/mixartemev/yii2-app-advanced.git ' . $this->getDb()->name . "\r\n";
-		print 'cd ' . $this->getDb()->name . "\r\n";
-		print 'composer install' . "\r\n";
+        print 'cd ' . $this->getDb()->name . "\r\n";
+        print 'composer install' . "\r\n";
         print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
-		print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
-		print '#create db if it\'s not and setup login and password for db connection in main-local config' . "\r\n";
+        print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
+        print '#create db if it\'s not and setup login and password for db connection in main-local config' . "\r\n";
         print $begin . 'php yii migrate --interactive=0' . "\r\n";
 
 #set db ssettings'."\r\n";
@@ -188,12 +203,16 @@ class TableController extends CommonController
                 $fields []= 'name:string(255):notNull:unique:comment(\'Название\')';
             }
 
-            print $begin . 'php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
+            print $begin . 'php yii migrate/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
             print $begin . 'php yii migrate --interactive=0' . "\r\n";
             print $begin . 'sleep 0.5 && php yii gii/mod --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
                   Inflector::camelize($table->name).' --generateLabelsFromComments=1 --overwrite=1  --interactive=0'."\r\n";
 
+        }
+        $thisDbTables = ArrayHelper::map($this->getDb()->getTables()->select('id')->all(), 'id', 'id');
+        foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
+            print $begin.'php yii migrate/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
         }
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = Inflector::camelize($table->name);

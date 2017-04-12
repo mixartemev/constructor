@@ -2,7 +2,6 @@
 
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Table */
@@ -13,10 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Tables'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="table-view">
-
-    <h1><?= Yii::t('app', 'Table') . $this->title ?></h1>
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -25,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <?= $this->render('_form', ['model' => $model]) ?>
 
     <?= $this->render('../field/index', ['dataProvider' => $fieldDataProvider]) ?>
 

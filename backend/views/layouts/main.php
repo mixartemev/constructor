@@ -41,18 +41,19 @@ AppAsset::register($this);
         //['label' => 'Relations', 'url' => ['/relation']],
         ['label' => Yii::t('app', 'Types'), 'url' => ['/type']],
         ['label' => Yii::t('app', 'Groups'), 'url' => ['/field-group']],
+        ['label' => Yii::t('app', 'Junctions'), 'url' => ['/junction']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-				Yii::t('app', 'Logout ({username})', ['username' => Yii::$app->user->identity->username]),
+                       . Html::beginForm(['/site/logout'], 'post')
+                       . Html::submitButton(
+                Yii::t('app', 'Logout ({username})', ['username' => Yii::$app->user->identity->username]),
                 ['class' => 'btn btn-link']
             )
-            . Html::endForm()
-            . '</li>';
+                       . Html::endForm()
+                       . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
