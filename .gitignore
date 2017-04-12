@@ -30,6 +30,7 @@ phpunit.phar
 /phpunit.xml
 
 # vagrant runtime
+/vagrant
 /.vagrant
 
 /composer.lock
