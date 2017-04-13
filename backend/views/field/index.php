@@ -28,7 +28,6 @@ use yii\widgets\Pjax;
                 'options' => ['width' => 50],
                 'footer' => Html::beginForm(['/field/create', 'id_table' => $id_table])
             ],
-            'title',
             [
                 'attribute' => 'name',
                 'format' => 'raw',
@@ -40,6 +39,10 @@ use yii\widgets\Pjax;
                     );
                 },
                 'footer' => Html::activeTextInput($newField = new Field(), 'name', ['class' => 'form-control', 'required' => true])
+            ],
+            [
+                'attribute' => 'title',
+                'footer' => Html::activeTextInput($newField, 'title', ['class' => 'form-control'])
             ],
             [
                 'attribute' => 'type.name',
@@ -74,7 +77,7 @@ use yii\widgets\Pjax;
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'fk',
-					ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'title'),
+                    ArrayHelper::map(Table::find()->where(['id_db' => $this->context->session->get('db')])->all(), 'id', 'title'),
                     ['class' => 'form-control', 'prompt' => 'No FK']
                 )
             ],
