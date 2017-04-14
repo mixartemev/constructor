@@ -121,7 +121,7 @@ use yii\widgets\Pjax;
                 )
             ],
             [
-                'attribute' => 'group.title',
+                'attribute' => 'fieldGroup.title',
                 /*'format' => 'raw',
                 'value' => function($model){
                     return $model->id_group
