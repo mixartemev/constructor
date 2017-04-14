@@ -46,14 +46,14 @@ use yii\widgets\Pjax;
             ],
             [
                 'attribute' => 'type.name',
-                'format' => 'raw',
+                /*'format' => 'raw',
                 'value' => function($model){
                     return Html::a(
                         $model->type->title ?: $model->type->name,
                         Yii::$app->getUrlManager()->createUrl(['type/view','id' => $model->id_type]),
                         ['title' => Yii::t('app', 'View dataType ') . $model->type->title ?: $model->type->name]
                     );
-                },
+                },*/
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'id_type',
@@ -122,17 +122,16 @@ use yii\widgets\Pjax;
             ],
             [
                 'attribute' => 'id_group',
-                'format' => 'raw',
+                /*'format' => 'raw',
                 'value' => function($model){
-                    /** @var Field $model */
                     return $model->id_group
                         ? Html::a(
                             $model->fieldGroup->title,
-                            Yii::$app->getUrlManager()->createUrl(['table/view','id' => $model->id_group]),
+                            Yii::$app->getUrlManager()->createUrl(['field-group/view','id' => $model->id_group]),
                             ['title' => Yii::t('app', 'View group ').$model->fieldGroup->title]
                         )
                         : '';
-                },
+                },*/
                 'footer' => Html::activeDropDownList(
                     $newField,
                     'id_group',
