@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Db;
 use backend\models\Field;
 use backend\models\Junction;
+use backend\models\Val;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
@@ -90,7 +91,20 @@ class TableController extends CommonController
         ]);
     }
 
-    public function actionAddJunction($t1,$t2)
+    public function actionFill($id)
+    {
+    	$fields = Field::find()->select('id')->where(['id_table' => $id])->all();
+        $valDataProvider = new ActiveDataProvider([
+            'query' => Val::find()->where(['field_id' => $fields]),
+        ]);
+        $valDataProvider->pagination->pageSize=100;
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+            'fieldDataProvider' => $fieldDataProvider,
+        ]);
+    }
+
+    public function actionAddJunction()
     {
         $model = new Table();
         $model->id_db = $this->db->id;
