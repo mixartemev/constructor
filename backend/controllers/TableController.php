@@ -91,7 +91,7 @@ class TableController extends CommonController
         ]);
     }
 
-    public function actionFill($id)
+    /*public function actionFill($id)
     {
     	$fields = Field::find()->select('id')->where(['id_table' => $id])->all();
         $valDataProvider = new ActiveDataProvider([
@@ -100,9 +100,9 @@ class TableController extends CommonController
         $valDataProvider->pagination->pageSize=100;
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'fieldDataProvider' => $fieldDataProvider,
+            'valDataProvider' => $valDataProvider,
         ]);
-    }
+    }*/
 
     public function actionAddJunction()
     {
@@ -185,18 +185,17 @@ class TableController extends CommonController
 
     /**
      * @param string $ns
-     * @param string $begin
      */
-    public function actionGen($ns = 'app', $begin = '')
+    public function actionGen($ns = 'app')
     {
         print '<pre>';
         print 'git clone https://github.com/mixartemev/yii2-app-advanced.git ' . $this->getDb()->name . "\r\n";
         print 'cd ' . $this->getDb()->name . "\r\n";
         print 'composer install' . "\r\n";
-        print $begin . 'php init --env=Development --overwrite=All' . "\r\n";
+        print 'php init --env=Development --overwrite=All' . "\r\n";
         print 'sed -i "" "s/yii2advanced/'.$this->getDb()->name.'/g" "common/config/main-local.php"' . "\r\n";
         print '#create db if it\'s not and setup login and password for db connection in main-local config' . "\r\n";
-        print $begin . 'php yii migrate --interactive=0' . "\r\n";
+        print 'php yii migrate --interactive=0' . "\r\n";
 
 #set db ssettings'."\r\n";
         /** @var Table $table */
@@ -217,20 +216,20 @@ class TableController extends CommonController
                 $fields []= 'name:string(255):notNull:unique:comment(\'Название\')';
             }
 
-            print $begin . 'php yii migrate/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
+            print 'php yii migrate/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
-            print $begin . 'php yii migrate --interactive=0' . "\r\n";
-            print $begin . 'sleep 0.5 && php yii gii/mod --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
-                  Inflector::camelize($table->name).' --generateLabelsFromComments=1 --overwrite=1  --interactive=0'."\r\n";
+        }
 
-        }
-        $thisDbTables = ArrayHelper::map($this->getDb()->getTables()->select('id')->all(), 'id', 'id');
-        foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
-            print $begin.'php yii migrate/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
-        }
+	    foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
+		    print 'php yii migrate/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
+	    }
+
+	    print 'php yii migrate --interactive=0' . "\r\n";
+	    print 'php yii gii/mod --tableName=* --ns='.$ns.'\models --generateLabelsFromComments=1 --overwrite=1  --interactive=0' . "\r\n";
+
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = Inflector::camelize($table->name);
-            print $begin.'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.
+            print 'php yii gii/construct --modelClass="'.$ns.'\models\\'.$class.'" --interactive=0 --enablePjax --enableI18N --controllerClass="'.
                   $ns.'\controllers\\'.$class.'Controller" --overwrite=1 --viewPath=@'.$ns.'/views/'.$table->name."\r\n";
         }
         print '</pre>';
