@@ -216,12 +216,12 @@ class TableController extends CommonController
                 $fields []= 'name:string(255):notNull:unique:comment(\'Название\')';
             }
 
-            print 'php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
+            print 'sleep 1 && php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
         }
 
 	    foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
-		    print 'php yii mig/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
+		    print 'sleep 1 && php yii mig/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
 	    }
 
 	    print 'php yii mig --interactive=0' . "\r\n";
