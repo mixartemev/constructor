@@ -82,15 +82,15 @@ use yii\widgets\Pjax;
                 )
             ],
             [
-                'attribute' => 'null',
+                'attribute' => 'not_null',
                 'format' => 'raw',
                 'value' => function($model){
                     /** @var Field $model */
-                    return Html::checkbox('null', $model->null, ['disabled' => true]);
+                    return Html::checkbox('not_null', $model->not_null, ['disabled' => true]);
                 },
                 'footer' => Html::activeCheckbox(
                     $newField,
-                    'null',
+                    'not_null',
                     ['label' => false]
                 )
             ],

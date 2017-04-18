@@ -206,7 +206,7 @@ class TableController extends CommonController
                 foreach ($flds as $field){
                     $fields []= $field->name
                                 . ':' . $field->type->name
-                                . ($field->null ? '' : ':notNull')
+                                //. ($field->null ? '' : ':notNull')
                                 . ($field->unique ? ':unique' : '')
                                 . (!$field->signed && in_array($field->id_type, [1, 2]) ? ':unsigned' : '')
                                 . ($field->fk ? ':foreignKey('.$field->fkTable->name.')' : '')

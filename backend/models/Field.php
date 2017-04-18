@@ -16,7 +16,7 @@ use Yii;
  * @property integer $fk
  * @property integer $sort
  * @property int $id_group
- * @property bool $null
+ * @property bool $not_null
  * @property bool $signed
  * @property bool $unique
  * @property bool $list_view
@@ -58,7 +58,7 @@ class Field extends Common
             [['name', 'id_table'], 'required'],
             [['id_table', 'id_type', 'id_group', 'sort', 'fk'], 'integer'],
             [['name', 'title'], 'string', 'max' => 255],
-            [['null', 'signed', 'unique', 'list_view'], 'boolean'],
+            [['not_null', 'signed', 'unique', 'list_view'], 'boolean'],
             [['id_type'], 'exist', 'skipOnError' => true, 'targetClass' => Type::className(), 'targetAttribute' => ['id_type' => 'id']],
             [['id_table', 'fk'], 'exist', 'skipOnError' => true, 'targetClass' => Table::className(), 'targetAttribute' => ['id_table' => 'id']],
         ];
@@ -76,9 +76,10 @@ class Field extends Common
             'table.name' => Yii::t('app', 'Table'),
             'type.name' => Yii::t('app', 'Type'),
             'fk' => Yii::t('app', 'FK'),
-            'null' => Yii::t('app', 'Null'),
+            'not_null' => Yii::t('app', 'Not Null'),
             'signed' => Yii::t('app', 'Signed'),
             'unique' => Yii::t('app', 'Unique'),
+            'fieldGroup.title' => Yii::t('app', 'Group'),
             'list_view' => Yii::t('app', 'List view'),
         ];
     }

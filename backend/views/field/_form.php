@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_type')->dropDownList(ArrayHelper::map(\backend\models\Type::find()->all(), 'id', 'name')) ?>
 
-	<?= $form->field($model, 'null')->checkbox() ?>
+	<?= $form->field($model, 'not_null')->checkbox() ?>
 	<?= $form->field($model, 'signed')->checkbox() ?>
 	<?= $form->field($model, 'unique')->checkbox() ?>
 
