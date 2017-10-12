@@ -218,6 +218,7 @@ class TableController extends CommonController
                 Inflector::camelize($table->name).' --generateLabelsFromComments=1 --overwrite=1  --interactive=0'."\r\n";
         }
 
+	    /** @var Junction $table */
 	    foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
 		    print 'sleep 1 && php yii mig/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
             print 'php yii gii/mod --tableName='.$table->t10->name.'_'.$table->t20->name.' --ns="'.$ns.'\models" --modelClass='.
