@@ -5,12 +5,10 @@ namespace backend\controllers;
 use backend\models\Db;
 use backend\models\Field;
 use backend\models\Junction;
-use backend\models\Val;
 use himiklab\sortablegrid\SortableGridAction;
 use Yii;
 use backend\models\Table;
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\web\NotFoundHttpException;
 
@@ -148,9 +146,7 @@ class TableController extends CommonController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return false;
         }
     }
 
