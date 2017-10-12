@@ -218,14 +218,18 @@ class TableController extends CommonController
 
             print 'sleep 1 && php yii mig/create create_'.$table->name.'_table -f="id:primaryKey:notNull:unsigned,'.
                   implode(',', $fields) . '" -c="'.$table->title.'" --interactive=0'."\r\n";
+            print 'php yii gii/mod --tableName='.$table->name.' --ns="'.$ns.'\models" --modelClass='.
+                Inflector::camelize($table->name).' --generateLabelsFromComments=1 --overwrite=1  --interactive=0'."\r\n";
         }
 
 	    foreach (Junction::find()/*->where(['t1' => [$thisDbTables]])*/->all() as $table){
 		    print 'sleep 1 && php yii mig/create create_junction_table_for_'.$table->t10->name.'_and_'.$table->t20->name.'_tables --interactive=0'."\r\n";
+            print 'php yii gii/mod --tableName='.$table->t10->name.'_'.$table->t20->name.' --ns="'.$ns.'\models" --modelClass='.
+                Inflector::camelize($table->t10->name.'_'.$table->t20->name).' --overwrite=1  --interactive=0'."\r\n";
 	    }
 
 	    print 'php yii mig --interactive=0' . "\r\n";
-	    print 'php yii gii/mod --tableName=* --ns='.$ns.'\models --generateLabelsFromComments=1 --overwrite=1  --interactive=0' . "\r\n";
+	    print 'php yii gii/mod --tableName=* --ns="'.$ns.'\models" --generateLabelsFromComments=1 --overwrite=1  --interactive=0' . "\r\n";
 
         foreach (Table::find()->where(['id_db' => $this->getDb()->id, 'gen_crud' => 1])->all() as $table){
             $class = Inflector::camelize($table->name);
